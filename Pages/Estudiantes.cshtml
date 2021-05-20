@@ -1,0 +1,58 @@
+﻿@page
+@model GestionEstudiantes.Pages.EstudiantesModel
+@{
+}
+@using DevExtreme.AspNet.Mvc
+@using EstudiantesCore.Dtos; 
+
+
+<style>
+
+    .imgRegistro {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+</style>
+
+<div class="card">
+    <div class="card-body">
+     <h1>Datos basicos del estudiante</h1>    
+        
+        @*<div>
+            <img class="imgRegistro" src="/images/marco.jpg" width="200px" height="200px" />
+        </div>*@
+
+    <div style="padding-top:20px">
+      @(Html.DevExtreme().Form<EstudianteDTO>()
+      .ID("Formulario")      
+      .ColCount(12)
+      .Items(items=> {
+          items.AddSimpleFor(m=>m.Id).Visible(false);
+          items.AddSimpleFor(m=>m.TipoDocumento.Id).ColSpan(4).Label(l=>l.Text("Tipo de documento").Location( FormLabelLocation.Top)).Editor(d => d.SelectBox().NoDataText("No se encontrarón datos"));
+          items.AddSimpleFor(m=>m.Documento).ValidationRules(s=>s.AddRequired().Message("Ingrese un número de documento")).ColSpan(4).Label(l => l.Text("Documento").Location(FormLabelLocation.Top)).Editor(d => d.TextBox().MaxLength(50));
+          items.AddSimpleFor(m=>m.Nombre).ValidationRules(s => s.AddRequired().Message("Ingrese un nombre")).ColSpan(4).Label(l => l.Text("Nombres").Location(FormLabelLocation.Top)).Editor(d => d.TextBox().MaxLength(50));
+          items.AddSimpleFor(m=>m.Apellido).ColSpan(4).Label(l => l.Text("Apellidos").Location(FormLabelLocation.Top)).Editor(d => d.TextBox().MaxLength(50));
+          items.AddSimpleFor(m=>m.FechaNacimiento).ColSpan(4).Label(l => l.Text("Fecha de nacimiento").Location(FormLabelLocation.Top)).Editor(d => d.DateBox().Max(DateTime.Now));
+          items.AddSimple().ColSpan(4).Label(l => l.Text("Sexo").Location(FormLabelLocation.Top)).Editor(d => d.SelectBox().NoDataText("No se encontrarón datos"));
+          items.AddSimple().ColSpan(4).Label(l => l.Text("Dirección").Location(FormLabelLocation.Top)).Editor(d => d.TextArea().MaxLength(300));
+          items.AddSimple().ColSpan(4).ValidationRules(v=>v.AddNumeric().Message("Solo se permiten números")).Label(l => l.Text("Telefono").Location(FormLabelLocation.Top)).Editor(d => d.TextBox().MaxLength(15));
+          items.AddSimple().ColSpan(4).ValidationRules(v=>v.AddEmail().Message("Formato de correo invalido")).Label(l => l.Text("Email").Location(FormLabelLocation.Top)).Editor(d => d.TextBox().MaxLength(200));
+          items.AddSimple().ColSpan(4).Label(l => l.Text("Fecha de Ingreso").Location(FormLabelLocation.Top)).Editor(e => e.DateBox());
+          items.AddEmpty().ColSpan(4);
+          items.AddButton().ColSpan(4).ButtonOptions(b => b.Text("Guardar").Type( ButtonType.Default));
+      })
+    )
+    </div> 
+    </div>
+</div>
+
+
+
+
+@section Scripts
+{
+
+   <script src="~/js/Estudiantes.js"></script>
+}

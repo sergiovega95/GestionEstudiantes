@@ -6,7 +6,7 @@ using System.Text;
 
 namespace EstudiantesCore.Entidades
 {
-    public class Estudiantes
+    public class Estudiante
     {
         [Required]
         [Key]     

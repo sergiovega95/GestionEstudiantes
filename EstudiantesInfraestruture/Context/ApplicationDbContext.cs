@@ -16,9 +16,9 @@ namespace EstudiantesInfraestruture.Context
         public DbSet<EstadoEstudiante> EstadoEstudiante { get; set; }
         public DbSet<EstadoMateria> EstadoMateria { get; set; }
         public DbSet<EstadoProfesor> EstadoProfesor { get; set; }
-        public DbSet<Estudiantes> Estudiante { get; set; }
-        public DbSet<EstudiantesXMateria> EstudiantesXMateria { get; set; }
-        public DbSet<Materia> Materia { get; set; }
+        public DbSet<Estudiante> Estudiante { get; set; }
+        public DbSet<MateriasXEstudiante> MateriasXEstudiante { get; set; }
+        public DbSet<Materia> Materia { get; set; } 
         public DbSet<Profesor> Profesor { get; set; }
         public DbSet<ProfesorXMaterias> ProfesorXMaterias { get; set; }
         public DbSet<TipoDocumento> TipoDocumento { get; set; }

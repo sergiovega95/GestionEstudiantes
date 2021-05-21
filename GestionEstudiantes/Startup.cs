@@ -11,6 +11,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.EntityFrameworkCore;
+using EstudiantesCore.Interfaces;
+using EstudiantesInfraestruture.Implementations;
 
 namespace GestionEstudiantes
 {
@@ -34,7 +36,7 @@ namespace GestionEstudiantes
             });
 
             services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("DatabaseConnectionString")));
-
+            services.AddScoped<IEstudiantes, Estudiantes>();
             services.AddMvc().AddJsonOptions(options => options.SerializerSettings.ContractResolver = new Newtonsoft.Json.Serialization.DefaultContractResolver()).SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }
 

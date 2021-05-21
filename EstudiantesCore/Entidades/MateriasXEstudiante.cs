@@ -4,11 +4,11 @@ using System.Text;
 
 namespace EstudiantesCore.Entidades
 {
-    public class EstudiantesXMateria
+    public class MateriasXEstudiante
     {
         public int Id { get; set; }
 
-        public Estudiantes Estudiante { get; set; }
+        public Estudiante Estudiante { get; set; }
 
         public Materia Materia { get; set; }
 

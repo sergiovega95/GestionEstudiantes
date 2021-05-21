@@ -6,39 +6,38 @@
     }
 });
 
-
 //Guarda y valida mi formulario
 async function Salvar()
 {
-    var form = $("#FormEstudiante").dxForm("instance");
-    var valido = form.validate().isValid;
+    try {
 
-    if (valido)
-    {
-        alert("Formaulario valido");
-        var data = form.option("formData");
-        await EnviarServidor(data);
-        
+        var form = $("#FormEstudiante").dxForm("instance");
+        var valido = form.validate().isValid;
+
+        if (valido) {
+
+            var dataformulario = form.option("formData");
+            await $.ajax({ method: "POST", url: "/Estudiantes?handler=CrearEstudiante", data: dataformulario });
+            $("#FormEstudiante").dxForm("instance").resetValues();
+        }
+
     }
+    catch (error) {
+
+    }
+    
 }
 
-async function EnviarServidor(dataformulario)
-{      
+//Valida que un documento sea unico
+async function DocumentoUnico(e)
+{
     try
     {
-        var respuesta = await $.ajax({
-            method: "POST",
-            url: "/Estudiantes?handler=CrearEstudiante",
-            data: dataformulario
-        });
-
-        alert("usuario agregado");
-        var form = $("#FormEstudiante").dxForm("instance").resetValues();
+       
+        return await $.ajax({ method: "GET", url: "/Estudiantes?handler=VerificarIdentificacionUnica", data: { identificacion: e.value} });
     }
     catch (error)
     {
-        alert("algo salio mal");
+        return false;
     }
-   
-        
 }

@@ -15,16 +15,47 @@ namespace GestionEstudiantes.Pages
         {
         }
 
+        /// <summary>
+        /// Metodo que crea un nuevo estudiante
+        /// </summary>
+        /// <param name="estudiante"></param>
+        /// <returns></returns>
         [HttpPost]
         public IActionResult OnPostCrearEstudiante(EstudianteDTO estudiante)
         {
             try
             {
-                return StatusCode(200,"Todo quedo bien");
+                if(TryValidateModel(estudiante))
+                {
+                    return StatusCode(200, "Modelo invalido");
+                }
+                else
+                {
+                    return StatusCode(400, "Modelo invalido");
+                }
+                
             }
             catch (Exception e)
             {
                 return StatusCode(500,e.Message);
+            }
+        }
+
+        /// <summary>
+        /// Metodo que verifica que la identificación del núevo estudiante sea unica 
+        /// </summary>
+        /// <param name="identificacion">identificación del estudiante</param>
+        /// <returns></returns>
+        [HttpGet]
+        public IActionResult OnGetVerificarIdentificacionUnica(string identificacion)
+        {
+            try
+            {
+                return StatusCode(200, true);
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, e.Message);
             }
         }
     }

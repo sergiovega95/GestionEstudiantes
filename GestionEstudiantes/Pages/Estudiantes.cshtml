@@ -6,32 +6,42 @@
 }
 
 @Html.AntiForgeryToken()
-
 @using DevExtreme.AspNet.Mvc
 
-@(Html.DevExtreme().Form<EstudianteDTO>()
+
+<div class="card">
+       
+
+    <div class="card-body">
+
+        <h2>Datos del estudiante</h2>
+
+        <div style="padding-top:20px">
+        @(Html.DevExtreme().Form<EstudianteDTO>()
         .ID("FormEstudiante")
         .ColCount(12)
         .Items(items=>
         {
 
+            items.AddSimpleFor(m => m.Id).Visible(false);
+
             items.AddSimpleFor(g => g.TipoDocumento).ColSpan(4)
-            .ValidationRules(s=>s.AddRequired().Message("Campo requerido"))
+            .ValidationRules(s=>s.AddRequired().Message("Seleccione un tipo de documento"))
             .Label(d => d.Location(FormLabelLocation.Top).Text("Tipo de documento"))
-            .Editor(f => f.SelectBox().Placeholder("Seleccione su tipo de documento").DisplayExpr("Nombre").DataSource(d => d.Array()
-            .Data(new List<TipoDocumento>() { new TipoDocumento() {  Id=1, Code="CC", Nombre="Cedula Ciudanía"} }).Key("Id")));
+            .Editor(f => f.SelectBox().Placeholder("Seleccione un tipo de documento").DisplayExpr("Nombre").DataSource(d => d.Array()
+            .Data(new List<TipoDocumento>() { new TipoDocumento() { Id=1, Code="CC", Nombre="Cedula Ciudanía"}, new TipoDocumento() { Id = 2, Code = "TI", Nombre = "Tarjeta de identidad" } }).Key("Id")));
 
 
             items.AddSimpleFor(m => m.Documento).ColSpan(4)
             .Label(d=>d.Location( FormLabelLocation.Top).Text("Documento"))
             .ValidationRules(v => v.AddRequired().Message("El documento es requerido"))
             .ValidationRules(f => f.AddNumeric().Message("Solo se permiten números"))
-            .Editor(s => s.TextBox().Placeholder("63350550").MaxLength(20));
+            .ValidationRules(f => f.AddAsync().ValidationCallback("DocumentoUnico").Message("Documento ya registrado anteriormente"))
+            .Editor(s => s.TextBox().MaxLength(20));
 
 
             items.AddSimpleFor(m => m.Nombre)
             .ValidationRules(v=>v.AddRequired().Message("El nombre es requerido"))
-            .ValidationRules(q=>q.AddStringLength().Min(10).Max(15).Message("Minimo 10 maximo 15"))
             .Label(f=>f.Location(FormLabelLocation.Top)
             .Text("Nombres")).ColSpan(4)
             .Editor(d=>d.TextBox().MaxLength(100));
@@ -44,7 +54,7 @@
 
 
             items.AddSimpleFor(g => g.Sexo).ColSpan(4)
-            .ValidationRules(s => s.AddRequired().Message("Campo requerido"))
+            .ValidationRules(s => s.AddRequired().Message("Seleccione un sexo"))
             .Label(d => d.Location(FormLabelLocation.Top).Text("Sexo"))
             .Editor(f => f.SelectBox().DataSource(d => d.Array()
             .Data(new List<string>() { "M","F"})));
@@ -56,7 +66,6 @@
             .Editor(f => f.DateBox().Max(DateTime.Now).DateSerializationFormat("yyyy-MM-dd").DisplayFormat("dd/MM/yyyy"));
 
             items.AddSimpleFor(m => m.Email).ColSpan(4)
-            .ValidationRules(v => v.AddRequired().Message("El email es requerido"))
             .ValidationRules(g=>g.AddEmail().Message("Ingrese un email valido"))
             .Label(f => f.Location(FormLabelLocation.Top)
             .Text("Email"))
@@ -69,24 +78,30 @@
             .Text("Telefono"))
             .Editor(d => d.TextBox().MaxLength(20));
 
-            items.AddSimpleFor(m => m.Direccion).ColSpan(4)
-            .ValidationRules(v => v.AddRequired().Message("El telefono es requerido"))
-            .Label(f => f.Location(FormLabelLocation.Top)
-            .Text("Dirección"))
-            .Editor(d => d.TextArea().MaxLength(500));
-
             items.AddSimpleFor(f => f.FechaIngreso).ColSpan(4)
             .Label(d => d.Location(FormLabelLocation.Top).Text("Fecha de ingreso"))
             .ValidationRules(s => s.AddRequired().Message("Campo requerido"))
             .Editor(f => f.DateBox().Max(DateTime.Now).DateSerializationFormat("yyyy-MM-dd").DisplayFormat("dd/MM/yyyy"));
 
-            items.AddEmpty().ColSpan(4);
+            items.AddSimpleFor(m => m.Direccion).ColSpan(4)
+            .ValidationRules(v => v.AddRequired().Message("La dirección es requerida"))
+            .Label(f => f.Location(FormLabelLocation.Top)
+            .Text("Dirección"))
+            .Editor(d => d.TextArea().MaxLength(500));
 
+            items.AddEmpty().ColSpan(4);
             items.AddButton().ColSpan(4).VerticalAlignment(VerticalAlignment.Bottom).ButtonOptions(s => s.Icon("save").Type(ButtonType.Default).OnClick("Salvar").Text("Guardar"));
         })
 
+    )
 
-)
+        </div>
+
+    </div>
+</div>
+
+
+
 
 @section Scripts
 {

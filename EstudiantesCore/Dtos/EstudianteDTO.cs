@@ -7,8 +7,7 @@ using System.Text;
 namespace EstudiantesCore.Dtos
 {
     public class EstudianteDTO
-    {
-           
+    {           
         public int Id { get; set; }
 
         public string Nombre { get; set; }
@@ -24,18 +23,18 @@ namespace EstudiantesCore.Dtos
 
         public string Sexo { get; set; }
 
-        [Required]
+        
         [MaxLength(500)]
         public string Direccion { get; set; }
 
-        [Required]
+        
         [MaxLength(20)]
         public string Telefono { get; set; }
 
         [MaxLength(50)]
         public string Email { get; set; }
 
-        [Required]
+        [Required(ErrorMessage ="Ingrese la fecha de ingreso del estudiante")]
         public DateTime FechaIngreso { get; set; }
 
         public DateTime FechaEgreso { get; set; }

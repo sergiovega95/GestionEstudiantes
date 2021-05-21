@@ -4,20 +4,12 @@
     ViewData["Title"] = "Home page";
 }
 
-@using DevExtreme.AspNet.Mvc
-
-@(Html.DevExtreme().TextBox().Value("texto"))
-@(Html.DevExtreme().Button().OnClick("Hola").Width(100).Type( ButtonType.Danger))
-@(Html.DevExtreme().SelectBox())
-
-@section Scripts 
-{
-   
-    <script>
-        function Hola() {
-            alert("click");
-        }
-
-    </script>
-}
-
+<div class="jumbotron">
+    <h1 class="display-4">Bienvenidos</h1>
+    <p class="lead">Mi primera aplicación con neptuno s.a.s</p>
+    <hr class="my-4">
+    <p>Modulo de gestión de de estudiantes</p>
+    <p class="lead">
+        
+    </p>
+</div>

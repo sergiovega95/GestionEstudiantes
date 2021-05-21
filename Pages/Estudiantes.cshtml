@@ -1,0 +1,94 @@
+﻿@page
+@model GestionEstudiantes.Pages.EstudiantesModel
+@using EstudiantesCore.Dtos
+@using EstudiantesCore.Entidades
+@{
+}
+
+@Html.AntiForgeryToken()
+
+@using DevExtreme.AspNet.Mvc
+
+@(Html.DevExtreme().Form<EstudianteDTO>()
+        .ID("FormEstudiante")
+        .ColCount(12)
+        .Items(items=>
+        {
+
+            items.AddSimpleFor(g => g.TipoDocumento).ColSpan(4)
+            .ValidationRules(s=>s.AddRequired().Message("Campo requerido"))
+            .Label(d => d.Location(FormLabelLocation.Top).Text("Tipo de documento"))
+            .Editor(f => f.SelectBox().Placeholder("Seleccione su tipo de documento").DisplayExpr("Nombre").DataSource(d => d.Array()
+            .Data(new List<TipoDocumento>() { new TipoDocumento() {  Id=1, Code="CC", Nombre="Cedula Ciudanía"} }).Key("Id")));
+
+
+            items.AddSimpleFor(m => m.Documento).ColSpan(4)
+            .Label(d=>d.Location( FormLabelLocation.Top).Text("Documento"))
+            .ValidationRules(v => v.AddRequired().Message("El documento es requerido"))
+            .ValidationRules(f => f.AddNumeric().Message("Solo se permiten números"))
+            .Editor(s => s.TextBox().Placeholder("63350550").MaxLength(20));
+
+
+            items.AddSimpleFor(m => m.Nombre)
+            .ValidationRules(v=>v.AddRequired().Message("El nombre es requerido"))
+            .ValidationRules(q=>q.AddStringLength().Min(10).Max(15).Message("Minimo 10 maximo 15"))
+            .Label(f=>f.Location(FormLabelLocation.Top)
+            .Text("Nombres")).ColSpan(4)
+            .Editor(d=>d.TextBox().MaxLength(100));
+
+            items.AddSimpleFor(m => m.Apellido).ColSpan(4)
+            .ValidationRules(v => v.AddRequired().Message("El apellido es requerido"))
+            .Label(f => f.Location(FormLabelLocation.Top)
+            .Text("Apellidos"))
+            .Editor(d => d.TextBox().MaxLength(100));
+
+
+            items.AddSimpleFor(g => g.Sexo).ColSpan(4)
+            .ValidationRules(s => s.AddRequired().Message("Campo requerido"))
+            .Label(d => d.Location(FormLabelLocation.Top).Text("Sexo"))
+            .Editor(f => f.SelectBox().DataSource(d => d.Array()
+            .Data(new List<string>() { "M","F"})));
+
+
+            items.AddSimpleFor(f => f.FechaNacimiento).ColSpan(4)
+            .Label(d => d.Location(FormLabelLocation.Top).Text("Fecha de nacimiento"))
+            .ValidationRules(s => s.AddRequired().Message("Campo requerido"))
+            .Editor(f => f.DateBox().Max(DateTime.Now).DateSerializationFormat("yyyy-MM-dd").DisplayFormat("dd/MM/yyyy"));
+
+            items.AddSimpleFor(m => m.Email).ColSpan(4)
+            .ValidationRules(v => v.AddRequired().Message("El email es requerido"))
+            .ValidationRules(g=>g.AddEmail().Message("Ingrese un email valido"))
+            .Label(f => f.Location(FormLabelLocation.Top)
+            .Text("Email"))
+            .Editor(d => d.TextBox().MaxLength(200));
+
+            items.AddSimpleFor(m => m.Telefono).ColSpan(4)
+            .ValidationRules(v => v.AddRequired().Message("El telefono es requerido"))
+            .ValidationRules(g => g.AddNumeric().Message("Solo se permiten números"))
+            .Label(f => f.Location(FormLabelLocation.Top)
+            .Text("Telefono"))
+            .Editor(d => d.TextBox().MaxLength(20));
+
+            items.AddSimpleFor(m => m.Direccion).ColSpan(4)
+            .ValidationRules(v => v.AddRequired().Message("El telefono es requerido"))
+            .Label(f => f.Location(FormLabelLocation.Top)
+            .Text("Dirección"))
+            .Editor(d => d.TextArea().MaxLength(500));
+
+            items.AddSimpleFor(f => f.FechaIngreso).ColSpan(4)
+            .Label(d => d.Location(FormLabelLocation.Top).Text("Fecha de ingreso"))
+            .ValidationRules(s => s.AddRequired().Message("Campo requerido"))
+            .Editor(f => f.DateBox().Max(DateTime.Now).DateSerializationFormat("yyyy-MM-dd").DisplayFormat("dd/MM/yyyy"));
+
+            items.AddEmpty().ColSpan(4);
+
+            items.AddButton().ColSpan(4).VerticalAlignment(VerticalAlignment.Bottom).ButtonOptions(s => s.Icon("save").Type(ButtonType.Default).OnClick("Salvar").Text("Guardar"));
+        })
+
+
+)
+
+@section Scripts
+{
+    <script src="~/js/Estudiantes.js"></script>
+}

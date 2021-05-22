@@ -8,8 +8,9 @@ namespace EstudiantesCore.Entidades
 {
     public class Estudiante
     {
+        [Key]
         [Required]
-        [Key]     
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
         [Required]

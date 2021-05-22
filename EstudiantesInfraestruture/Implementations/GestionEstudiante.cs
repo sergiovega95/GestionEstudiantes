@@ -1,12 +1,13 @@
 ﻿using EstudiantesCore.Entidades;
 using EstudiantesCore.Interactores;
+using EstudiantesCore.Interfaces;
 using System;
 using System.Collections.Generic;
 using System.Text;
 
 namespace EstudiantesInfraestruture.Implementations
 {
-    public class Matricula : IMatricula
+    public class GestionEstudiante  : IGestionEstudiante
     {
         public void ActualizarEstudiante(Estudiantes estudiante)
         {

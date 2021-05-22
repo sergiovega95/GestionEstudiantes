@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using EstudiantesCore.Dtos;
 using EstudiantesCore.Entidades;
 using EstudiantesCore.Interactores;
+using EstudiantesCore.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 
@@ -12,15 +13,15 @@ namespace GestionEstudiantes.Pages
 {
     public class EstudiantesModel : PageModel
     {
-        private readonly IMatricula _matricula;
+        private readonly IGestionEstudiante _estudiante ;
 
         public void OnGet()
         {
         }
 
-        public EstudiantesModel(IMatricula matricula)
+        public EstudiantesModel(IGestionEstudiante estudiante )
         {
-            _matricula = matricula;
+            _estudiante = estudiante;
         }
 
         /// <summary>
@@ -37,7 +38,7 @@ namespace GestionEstudiantes.Pages
 
                 if (modeloValido)
                 {
-                    _matricula.MatricularEstudiante(estudiante);
+                    _estudiante.MatricularEstudiante(estudiante);
                 }
                 else
                 {

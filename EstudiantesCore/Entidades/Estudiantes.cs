@@ -18,40 +18,40 @@ namespace EstudiantesCore.Entidades
         [MaxLength(300)]
         public string Nombre { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Apellido es obligatorio")]
         [MaxLength(200)]
         public string Apellido { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Ingrese un documento")]
         [MaxLength(20)]
         public string Documento { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Ingrese la fecha de nacimiento del estudiante")]
         public DateTime FechaNacimiento { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Ingrese el sexo del estudiante")]
         [MaxLength(1)]
-        public string Sexo { get; set; } 
+        public string Sexo { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Ingrese la dirección del estudiante")]
         [MaxLength(500)]
         public string Direccion { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Ingrese el telefono del estudiante")]
         [MaxLength(20)]
         public string Telefono { get; set; }
 
         [MaxLength(50)]
         public string Email { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Ingrese la fecha de ingreso del estudiante")]
         public DateTime FechaIngreso { get; set; }
 
         public DateTime FechaEgreso { get; set; }
 
         public DateTime FechaRetiro { get; set; }
 
-        [Required]
+        [Required(ErrorMessage = "Seleccione el tipo de documento")]
         public TipoDocumento TipoDocumento { get; set; }
 
         [Required]

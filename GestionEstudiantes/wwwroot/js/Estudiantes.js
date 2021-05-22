@@ -42,3 +42,42 @@ async function EnviarServidor(dataformulario)
    
         
 }
+
+function VerificarMayorEdad(e)
+{
+    console.log(e);
+    var valido = true;
+
+    var edad = e.value;
+
+    if (edad<18)
+    {
+        valido = false;
+    }
+
+    return valido;
+}
+
+async function ValidarIdentificacionUnica(e)
+{
+    try {
+
+        var identificacion = e.value;
+
+        var idTipoDocumento = $("#FormEstudiante").dxForm("instance").getEditor("TipoDocumento").option("value").Id;
+
+        if (idTipoDocumento!=0)
+        {
+            var valido = await $.ajax({
+                method: "GET",
+                url: "/Estudiantes?handler=VerificarIdentificacion",
+                data: { Idtipodocumento: idTipoDocumento, documento: identificacion }
+            });
+        }      
+
+        return valido;
+    }
+    catch (error) {
+
+    }
+}

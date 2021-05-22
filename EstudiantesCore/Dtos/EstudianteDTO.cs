@@ -22,6 +22,8 @@ namespace EstudiantesCore.Dtos
      
         public DateTime FechaNacimiento { get; set; }
 
+        public int Edad { get; set; }
+
         public string Sexo { get; set; }
 
         [Required]

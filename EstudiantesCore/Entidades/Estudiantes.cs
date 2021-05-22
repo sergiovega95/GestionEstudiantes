@@ -6,14 +6,16 @@ using System.Text;
 
 namespace EstudiantesCore.Entidades
 {
+    [Table("Estudiante", Schema = "GE")]
     public class Estudiantes
     {
+        [Key]
         [Required]
-        [Key]     
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        [Required]
-        [MaxLength(200)]
+        [Required(ErrorMessage ="Nombre es obligatorio")]
+        [MaxLength(300)]
         public string Nombre { get; set; }
 
         [Required]

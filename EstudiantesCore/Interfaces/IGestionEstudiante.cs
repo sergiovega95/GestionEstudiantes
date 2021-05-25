@@ -16,5 +16,14 @@ namespace EstudiantesCore.Interfaces
         List<Estudiantes> ObtenerTodosEstudiantes();
 
         List<EstudiantesXMateria> ObtenerMateriasEstudiante(int IdEstudiante);
+
+        List<TipoDocumento> GetDocumentos();
+
+        List<EstadoEstudiante> GetEstados();
+
+        bool VerificarEstudianteByDocumento(int IdTipoDocumento , string Documento);
+
+        EstadoEstudiante GetEstadoByCodigo(string codigo);
+
     }
 }

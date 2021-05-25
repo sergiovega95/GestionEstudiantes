@@ -18,14 +18,15 @@
             items.AddSimpleFor(g => g.TipoDocumento).ColSpan(4)
             .ValidationRules(s=>s.AddRequired().Message("Campo requerido"))
             .Label(d => d.Location(FormLabelLocation.Top).Text("Tipo de documento"))
-            .Editor(f => f.SelectBox().Placeholder("Seleccione su tipo de documento").DisplayExpr("Nombre").DataSource(d => d.Array()
-            .Data(new List<TipoDocumento>() { new TipoDocumento() {  Id=1, Code="CC", Nombre="Cedula Ciudanía"} }).Key("Id")));
+            .Editor(f => f.SelectBox().Placeholder("Seleccione su tipo de documento").DisplayExpr("Nombre")
+            .DataSource(d => d.RemoteController().LoadUrl("/Estudiantes?handler=TipoDocumento").Key("Id")));
 
 
             items.AddSimpleFor(m => m.Documento).ColSpan(4)
             .Label(d=>d.Location( FormLabelLocation.Top).Text("Documento"))
             .ValidationRules(v => v.AddRequired().Message("El documento es requerido"))
-            .ValidationRules(f => f.AddNumeric().Message("Solo se permiten números"))            
+            .ValidationRules(f => f.AddNumeric().Message("Solo se permiten números")) 
+            .ValidationRules(g=>g.AddAsync().ValidationCallback("ValidarIdentificacionUnica").Message("Ya existe un usuario registrado con este documento"))
             .Editor(s => s.TextBox().Placeholder("63350550").MaxLength(20));
 
 
@@ -86,8 +87,36 @@
             items.AddButton().ColSpan(4).VerticalAlignment(VerticalAlignment.Bottom).ButtonOptions(s => s.Icon("save").Type(ButtonType.Default).OnClick("Salvar").Text("Guardar"));
         })
 
-
 )
+
+
+<div  class="mt-3">
+
+   <h1>Estudiantes matriculados</h1>
+
+    @(Html.DevExtreme().DataGrid<Estudiantes>()
+               .ID("TableEstudiantes")
+               .ShowRowLines(true)
+               .Selection(s=>s.SelectAllMode( SelectAllMode.AllPages).Mode( SelectionMode.Multiple))
+               .Export(s=>s.Enabled(true))
+               .Editing(s=>s.AllowAdding(true).AllowUpdating(true).AllowDeleting(true).UseIcons(true).Mode( GridEditMode.Cell))
+               .AllowColumnReordering(true)
+               .AllowColumnResizing(true)
+               .Paging(s => s.Enabled(true).PageSize(5))
+               .SearchPanel(d => d.Visible(true))
+               .DataSource(s => s.RemoteController().LoadUrl("/Estudiantes?handler=ObtenerEstudiantes"))
+               .Columns(s =>
+               {
+                   s.AddFor(q => q.TipoDocumento.Nombre).Width(400).Lookup(q => q.DataSource(f => f.RemoteController().LoadUrl("/Estudiantes?handler=TipoDocumento").Key("Id")).DisplayExpr("Nombre"));
+                   s.AddFor(q => q.Documento).Name("Identificación").Width(400);
+                   s.AddFor(q => q.Nombre).Width(400);
+                   s.AddFor(q => q.Apellido).Width(400);
+
+               })
+
+    )
+</div>
+
 
 @section Scripts
 {

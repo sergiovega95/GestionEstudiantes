@@ -15,9 +15,10 @@ async function Salvar()
 
     if (valido)
     {
-        alert("Formaulario valido");
+        
         var data = form.option("formData");
         await EnviarServidor(data);
+        
         
     }
 }
@@ -31,9 +32,9 @@ async function EnviarServidor(dataformulario)
             url: "/Estudiantes?handler=CrearEstudiante",
             data: dataformulario
         });
-
-        alert("usuario agregado");
+              
         var form = $("#FormEstudiante").dxForm("instance").resetValues();
+        $("#TableEstudiantes").dxDataGrid("instance").refresh();
     }
     catch (error)
     {

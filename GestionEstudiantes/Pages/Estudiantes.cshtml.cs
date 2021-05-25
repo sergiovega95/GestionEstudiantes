@@ -2,6 +2,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using DevExtreme.AspNet.Data;
+using DevExtreme.AspNet.Mvc;
 using EstudiantesCore.Dtos;
 using EstudiantesCore.Entidades;
 using EstudiantesCore.Interactores;
@@ -34,17 +36,9 @@ namespace GestionEstudiantes.Pages
         {
             try
             {
-                bool modeloValido = TryValidateModel(estudiante);
-
-                if (modeloValido)
-                {
-                    _estudiante.MatricularEstudiante(estudiante);
-                }
-                else
-                {
-                    return StatusCode(400, "Modelo invalido");
-                }
-
+                estudiante.Estado = _estudiante.GetEstadoByCodigo("M");
+                estudiante.TipoDocumento = _estudiante.GetDocumentos().Where(s => s.Id == estudiante.TipoDocumento.Id).FirstOrDefault();
+                _estudiante.MatricularEstudiante(estudiante);             
                 return StatusCode(200);
             }
             catch (Exception e)
@@ -64,12 +58,10 @@ namespace GestionEstudiantes.Pages
 
             try
             {
-                if (!string.IsNullOrEmpty(documento))
+                if (!string.IsNullOrEmpty(documento) && Idtipodocumento>0)
                 {
-                    if (documento=="1098777611")
-                    {
-                        return StatusCode(200, false);
-                    }
+                    bool existe = !_estudiante.VerificarEstudianteByDocumento(Idtipodocumento, documento);
+                    return StatusCode(200, existe);                   
                 }
 
                 return StatusCode(200, true);
@@ -80,5 +72,58 @@ namespace GestionEstudiantes.Pages
                 return StatusCode(500, e.Message);
             }
         }
+
+        /// <summary>
+        /// Obtiene los documentos
+        /// </summary>
+        /// <param name="loader"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public IActionResult OnGetTipoDocumento(DataSourceLoadOptions options)
+        {
+            try
+            {
+                List<TipoDocumento> documentos = _estudiante.GetDocumentos();
+                return new JsonResult(DataSourceLoader.Load(documentos, options));
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, e.Message);
+            }
+        }
+
+        /// <summary>
+        /// obtiene los estados
+        /// </summary>
+        /// <param name="loader"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public IActionResult OnGetEstados (DataSourceLoadOptions options)
+        {
+            try
+            {
+                List<EstadoEstudiante> estados  = _estudiante.GetEstados();
+                return new JsonResult(DataSourceLoader.Load(estados, options));
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, e.Message);
+            }
+        }
+
+        [HttpGet]
+        public IActionResult OnGetObtenerEstudiantes (DataSourceLoadOptions options)
+        {
+            try
+            {
+                List<Estudiantes> estudiantes = _estudiante.ObtenerTodosEstudiantes();
+                return new JsonResult(DataSourceLoader.Load(estudiantes, options));
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, e.Message);
+            }
+        }
+
     }
 }

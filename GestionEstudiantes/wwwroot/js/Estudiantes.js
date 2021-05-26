@@ -6,62 +6,60 @@
     }
 });
 
+var isEdition = false;
 
 //Guarda y valida mi formulario
 async function Salvar()
 {
-    var form = $("#FormEstudiante").dxForm("instance");
-    var valido = form.validate().isValid;
-
-    if (valido)
-    {
-        
-        var data = form.option("formData");
-        await EnviarServidor(data);
-        
-        
-    }
-}
-
-async function EnviarServidor(dataformulario)
-{      
     try
     {
-        var respuesta = await $.ajax({
-            method: "POST",
-            url: "/Estudiantes?handler=CrearEstudiante",
-            data: dataformulario
-        });
-              
-        var form = $("#FormEstudiante").dxForm("instance").resetValues();
-        $("#TableEstudiantes").dxDataGrid("instance").refresh();
+        var form = $("#FormEstudiante").dxForm("instance");
+        var valido = form.validate().isValid;
+
+        if (valido)
+        {
+            var data = form.option("formData");
+            await EnviarServidor(data);
+            EsconderFormulario();
+            await Swal.fire(
+                'Información',
+                'Registro guardado exitosamente',
+                'success'
+            )
+        }
+
     }
     catch (error)
     {
-        alert("algo salio mal");
-    }
-   
-        
+        await Swal.fire(
+            'Información',
+            'Algo salió mal',
+            'error'
+        )
+    }    
 }
 
-function VerificarMayorEdad(e)
-{
-    console.log(e);
-    var valido = true;
-
-    var edad = e.value;
-
-    if (edad<18)
-    {
-        valido = false;
-    }
-
-    return valido;
+async function EnviarServidor(dataformulario)
+{     
+   
+   var respuesta = await $.ajax({
+            method: "POST",
+            url: "/Estudiantes?handler=CrearEstudiante",
+            data: dataformulario
+        });              
+   var form = $("#FormEstudiante").dxForm("instance").resetValues();
+   $("#TableEstudiantes").dxDataGrid("instance").refresh();  
+       
 }
 
 async function ValidarIdentificacionUnica(e)
 {
     try {
+
+        if (isEdition)
+        {
+            return true;
+        }
 
         var identificacion = e.value;
 
@@ -81,4 +79,69 @@ async function ValidarIdentificacionUnica(e)
     catch (error) {
 
     }
+}
+
+function NuevoEstudiante()
+{
+    isEdition = false;
+    $("#divgridEstudiantes").hide();   
+    $("#divformEstudiante").show();
+    $("#FormEstudiante").dxForm("instance").resetValues();
+    $("#FormEstudiante").dxForm("instance").option("readOnly", false);
+}
+
+function EsconderFormulario()
+{
+    $("#divformEstudiante").hide();
+    $("#divgridEstudiantes").show();
+    $("#FormEstudiante").dxForm("instance").resetValues();
+    $("#FormEstudiante").dxForm("instance").option("formData", null);
+    $("#TableEstudiantes").dxDataGrid("instance").refresh();   
+    $("#FormEstudiante").dxForm("instance").option("readOnly", false);
+    $("#btnGuardar").dxButton("instance").option("visible", true);
+}
+
+async function EditStudentFromGrid(e) {
+
+    isEdition = true;
+
+    var IdStudent = e.row.data.Id;
+
+    var dataStudent = await $.ajax({
+        method: "GET",
+        url: "/Estudiantes?handler=GetEstudianteById",
+        data: { IdEstudiante: IdStudent }
+    });
+
+    if (dataStudent!=null)
+    {        
+        $("#FormEstudiante").dxForm("instance").option("formData", dataStudent);
+        $("#FormEstudiante").dxForm("instance").getEditor("TipoDocumento").option("readOnly", true);
+        $("#FormEstudiante").dxForm("instance").getEditor("Documento").option("readOnly", true);
+
+        $("#divgridEstudiantes").hide();
+        $("#divformEstudiante").show();
+    }    
+}
+
+async function VerEstudianteFromGrid(e)
+{
+    isEdition = true;
+
+    var IdStudent = e.row.data.Id;
+
+    var dataStudent = await $.ajax({
+        method: "GET",
+        url: "/Estudiantes?handler=GetEstudianteById",
+        data: { IdEstudiante: IdStudent }
+    });
+
+    if (dataStudent != null)
+    {  
+        $("#FormEstudiante").dxForm("instance").option("formData", dataStudent);
+        $("#FormEstudiante").dxForm("instance").option("readOnly", true);
+        $("#btnGuardar").dxButton("instance").option("visible", false);
+        $("#divgridEstudiantes").hide();
+        $("#divformEstudiante").show();
+    }  
 }

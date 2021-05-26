@@ -26,10 +26,12 @@ namespace EstudiantesInfraestruture.Implementations
         }
 
         public void MatricularEstudiante(Estudiantes estudiante)
-        {         
-                     
+        {
+            _dbcontext.EstadoEstudiante.Find(estudiante.Estado.Id);
+            _dbcontext.TipoDocumento.Find(estudiante.TipoDocumento.Id);
             _dbcontext.Estudiante.Add(estudiante);
-            _dbcontext.SaveChanges();
+            _dbcontext.SaveChanges();       
+                     
         }
 
         public Estudiantes ObtenerEstudiante(int IdEstudiante)
@@ -58,7 +60,7 @@ namespace EstudiantesInfraestruture.Implementations
            
         public List<TipoDocumento> GetDocumentos()
         {
-            List<TipoDocumento> documentos = _dbcontext.TipoDocumento.ToList();
+            List<TipoDocumento> documentos = _dbcontext.TipoDocumento.AsNoTracking().ToList();
             return documentos;
         }
 
@@ -78,7 +80,7 @@ namespace EstudiantesInfraestruture.Implementations
 
         public EstadoEstudiante GetEstadoByCodigo(string codigo)
         {
-            EstadoEstudiante estado = _dbcontext.EstadoEstudiante.Where(s => s.Code == codigo).FirstOrDefault();
+            EstadoEstudiante estado = _dbcontext.EstadoEstudiante.Where(s => s.Code == codigo).AsNoTracking().FirstOrDefault();
             return estado;
         }
     }

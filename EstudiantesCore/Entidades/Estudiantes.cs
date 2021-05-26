@@ -52,10 +52,10 @@ namespace EstudiantesCore.Entidades
         public DateTime FechaRetiro { get; set; }
 
         [Required(ErrorMessage = "Seleccione el tipo de documento")]
-        public TipoDocumento TipoDocumento { get; set; }
+        public virtual TipoDocumento TipoDocumento { get; set; }
 
         [Required]
-        public EstadoEstudiante Estado { get; set; }
+        public virtual EstadoEstudiante Estado { get; set; }
 
 
     }

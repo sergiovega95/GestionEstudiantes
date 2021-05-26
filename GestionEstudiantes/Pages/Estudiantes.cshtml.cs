@@ -36,9 +36,16 @@ namespace GestionEstudiantes.Pages
         {
             try
             {
-                estudiante.Estado = _estudiante.GetEstadoByCodigo("M");
-                estudiante.TipoDocumento = _estudiante.GetDocumentos().Where(s => s.Id == estudiante.TipoDocumento.Id).FirstOrDefault();
-                _estudiante.MatricularEstudiante(estudiante);             
+                if (estudiante.Id==0)
+                {
+                   estudiante.Estado = _estudiante.GetEstadoByCodigo("M");
+                   _estudiante.MatricularEstudiante(estudiante);
+                }
+                else
+                {
+                   _estudiante.ActualizarEstudiante(estudiante);
+                }
+                            
                 return StatusCode(200);
             }
             catch (Exception e)
@@ -118,6 +125,20 @@ namespace GestionEstudiantes.Pages
             {
                 List<Estudiantes> estudiantes = _estudiante.ObtenerTodosEstudiantes();
                 return new JsonResult(DataSourceLoader.Load(estudiantes, options));
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, e.Message);
+            }
+        }
+
+        [HttpGet]
+        public IActionResult OnGetGetEstudianteById(int IdEstudiante)
+        {
+            try
+            {
+                Estudiantes estudiante = _estudiante.ObtenerEstudiante(IdEstudiante);
+                return StatusCode(200, estudiante);
             }
             catch (Exception e)
             {

@@ -28,6 +28,12 @@ body {
     margin: 15px;
 }
 
+.divalumnos {
+    padding-left: 10%;
+    padding-top: 3%;
+    padding-right: 10%;
+}
+
 /* Hide/rearrange for smaller screens */
 @media screen and (max-width: 767px) {
     /* Hide captions */

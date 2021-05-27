@@ -59,6 +59,8 @@
 
     <script src="~/js/devextreme/aspnet/dx.aspnet.mvc.js"></script>
     <script src="~/js/devextreme/aspnet/dx.aspnet.data.js"></script>
+    <link href="~/css/site.css" rel="stylesheet" />
+
 </head>
 
 <body style="padding-top: 5rem;">
@@ -80,7 +82,7 @@
         </div>
     </nav>
 
-    <main role="main" class="container">
+    <main role="main" class="container-fluid">
         @RenderBody()
     </main>
     @RenderSection("Scripts", required: false)

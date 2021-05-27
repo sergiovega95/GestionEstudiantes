@@ -82,3 +82,8 @@ async function ValidarIdentificacionUnica(e)
 
     }
 }
+
+function EditarEstudianteFromGrid(e)
+{
+    console.log(e);
+}

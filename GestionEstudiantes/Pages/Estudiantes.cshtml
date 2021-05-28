@@ -16,7 +16,7 @@
         <div class="card-body">
             <div id="divgrid">
 
-        @(Html.DevExtreme().Button().Text("Nuevo estudiante").Type(ButtonType.Default))
+        @(Html.DevExtreme().Button().Text("Nuevo estudiante").Icon("add").OnClick("EsconderGrid").Type(ButtonType.Default))
 
         @(Html.DevExtreme().DataGrid<Estudiantes>()
                        .ID("TableEstudiantes")
@@ -40,9 +40,14 @@
                            s.AddFor(q => q.Nombre).Caption("Nombres");
                            s.AddFor(q => q.Apellido).Caption("Apellidos");
                            s.AddFor(q => q.Estado.Id).Caption("Estado").Lookup(h => h.DataSource(f => f.RemoteController().LoadUrl("/Estudiantes?handler=Estados").Key("Id")).DisplayExpr("Nombre").ValueExpr("Id"));
-                           s.Add().Buttons(b =>
+                           s.Add().Visible(true)
+                           .Type(GridCommandColumnType.Buttons)
+                           .Width(110).Buttons(b => {
 
-                           b.Add()   .Icon("edit").Hint("Editar").OnClick("EditarEstudianteFromGrid"));
+                               b.Add().Icon("edit").Hint("Editar").OnClick("EditarEstudianteFromGrid");
+                               b.Add().Icon("info").Hint("Detalle").OnClick("VerEstudianteFromGrid");
+
+                           });
 
                        })
 
@@ -51,7 +56,9 @@
 
     <div style="display:none" id="divformulario">
 
-        @(Html.DevExtreme().Button().Text("Volver").Type(ButtonType.Default))
+        <div class="mb-3">
+            @(Html.DevExtreme().Button().OnClick("EsconderFormulario").Text("Volver").Icon("arrowleft").Type(ButtonType.Default))
+        </div>      
 
         @(Html.DevExtreme().Form<Estudiantes>()
                                 .ID("FormEstudiante")
@@ -71,12 +78,11 @@
                                     .ValidationRules(v => v.AddRequired().Message("El documento es requerido"))
                                     .ValidationRules(f => f.AddNumeric().Message("Solo se permiten números"))
                                     .ValidationRules(g => g.AddAsync().ValidationCallback("ValidarIdentificacionUnica").Message("Ya existe un usuario registrado con este documento"))
-                                    .Editor(s => s.TextBox().Placeholder("63350550").MaxLength(20));
+                                    .Editor(s => s.TextBox().MaxLength(20));
 
 
                                     items.AddSimpleFor(m => m.Nombre)
-                                    .ValidationRules(v => v.AddRequired().Message("El nombre es requerido"))
-                                    .ValidationRules(q => q.AddStringLength().Min(10).Max(15).Message("Minimo 10 maximo 15"))
+                                    .ValidationRules(v => v.AddRequired().Message("El nombre es requerido"))                                    
                                     .Label(f => f.Location(FormLabelLocation.Top)
                                     .Text("Nombres")).ColSpan(4)
                                     .Editor(d => d.TextBox().MaxLength(100));
@@ -128,7 +134,7 @@
 
                                     items.AddEmpty().ColSpan(4);
 
-                                    items.AddButton().ColSpan(4).VerticalAlignment(VerticalAlignment.Bottom).ButtonOptions(s => s.Icon("save").Type(ButtonType.Default).OnClick("Salvar").Text("Guardar"));
+                                    items.AddButton().ColSpan(4).VerticalAlignment(VerticalAlignment.Bottom).ButtonOptions(s => s.Icon("save").ID("btnsalvar").Type(ButtonType.Default).OnClick("Salvar").Text("Guardar"));
                                 })
 
         )

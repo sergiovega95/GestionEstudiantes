@@ -36,9 +36,16 @@ namespace GestionEstudiantes.Pages
         {
             try
             {
-                estudiante.Estado = _estudiante.GetEstadoByCodigo("M");
-                estudiante.TipoDocumento = _estudiante.GetDocumentos().Where(s => s.Id == estudiante.TipoDocumento.Id).FirstOrDefault();
-                _estudiante.MatricularEstudiante(estudiante);             
+                if (estudiante.Id==0)
+                {
+                    estudiante.Estado = _estudiante.GetEstadoByCodigo("M");
+                    _estudiante.MatricularEstudiante(estudiante);
+                }
+                else
+                {
+                    _estudiante.ActualizarEstudiante(estudiante);
+                }
+                           
                 return StatusCode(200);
             }
             catch (Exception e)
@@ -123,6 +130,33 @@ namespace GestionEstudiantes.Pages
             {
                 return StatusCode(500, e.Message);
             }
+        }
+
+        /// <summary>
+        /// Metodo que me permite obtener un estudiante utilizando el id
+        /// </summary>
+        /// <param name="idEstudiante">id único del estudiante</param>
+        /// <returns></returns>
+        [HttpGet]
+        public IActionResult OnGetObtenerEstudiante(int idEstudiante)
+        {
+            try
+            {
+                if (idEstudiante>0)
+                {
+                    Estudiantes estudiante = _estudiante.ObtenerEstudiante(idEstudiante);
+                    return StatusCode(200, estudiante);
+                }
+                else
+                {
+                    return StatusCode(200, null);
+                }
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, e.Message);
+            }
+
         }
 
     }

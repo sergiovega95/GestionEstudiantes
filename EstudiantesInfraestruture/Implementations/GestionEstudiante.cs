@@ -82,5 +82,44 @@ namespace EstudiantesInfraestruture.Implementations
             EstadoEstudiante estado = _dbcontext.EstadoEstudiante.Where(s => s.Code == codigo).AsNoTracking().FirstOrDefault();
             return estado;
         }
+
+        public List<Materia> GetMaterias()
+        {
+            List<Materia> materia = _dbcontext.Materia.Include(s => s.Estado).AsNoTracking().ToList();
+            return materia;           
+        }
+
+        public List<EstadoMateria> GetEstadosMateria()
+        {
+            List<EstadoMateria> estados = _dbcontext.EstadoMateria.ToList();
+
+            return estados;
+        }
+
+        public bool VerificarCodigoUnicoMateria(string codigo)
+        {
+            return _dbcontext.Materia.Any(s => s.Code.ToUpper() == codigo.ToUpper());
+        }
+
+        public void CrearNuevaMateria(Materia nuevaMateria)
+        {
+            nuevaMateria.Estado = _dbcontext.EstadoMateria.Find(nuevaMateria.Estado.Id);
+            _dbcontext.Materia.Add(nuevaMateria);
+            _dbcontext.SaveChanges();
+        }
+
+        public Materia GetMateriaById(int Id)
+        {
+           return _dbcontext.Materia.Find(Id);
+        }
+
+        public void ActualizarMateria(Materia materia)
+        {
+            if (materia.Estado.Id!=0)
+            {
+                materia.Estado = _dbcontext.EstadoMateria.Find(materia.Id);
+            }
+            _dbcontext.SaveChanges();
+        }
     }
 }

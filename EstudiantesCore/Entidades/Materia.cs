@@ -19,5 +19,10 @@ namespace EstudiantesCore.Entidades
 
         public string Nombre { get; set; }
 
+        [Required]
+        public virtual EstadoMateria Estado { get; set; }
+
+        [Required]
+        public int year { get; set; }
     }
 }

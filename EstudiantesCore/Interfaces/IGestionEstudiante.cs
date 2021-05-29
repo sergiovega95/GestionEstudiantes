@@ -25,5 +25,17 @@ namespace EstudiantesCore.Interfaces
 
         EstadoEstudiante GetEstadoByCodigo(string codigo);
 
+        List<Materia> GetMaterias();
+
+        List<EstadoMateria> GetEstadosMateria();
+
+        bool VerificarCodigoUnicoMateria(string codigo);
+
+        void CrearNuevaMateria(Materia nuevaMateria);
+
+        Materia GetMateriaById(int Id);
+
+        void ActualizarMateria(Materia materia);
+
     }
 }

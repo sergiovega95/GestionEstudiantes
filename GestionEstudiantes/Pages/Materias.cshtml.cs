@@ -111,6 +111,12 @@ namespace GestionEstudiantes.Pages
 
         }
 
+        /// <summary>
+        /// actualiza el modelo
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="values"></param>
+        /// <returns></returns>
         [HttpPut]
         public IActionResult OnPutActualizarMateria(int key , string values)
         {

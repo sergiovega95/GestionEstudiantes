@@ -18,30 +18,30 @@
         <div>
 
             @(Html.DevExtreme().DataGrid<Materia>()
-                             .ID("TableMateria")
-                             .ShowRowLines(true)
-                             .Export(s => s.Enabled(true))
-                             .Editing(s=>s.AllowUpdating(true).UseIcons(true).Mode(GridEditMode.Form))
-                             .OnRowUpdating("SetEditmode")
-                             .RowAlternationEnabled(true)
-                             .ShowBorders(true)
-                             .ShowColumnLines(true)
-                             .FilterRow(s => s.Visible(true))
-                             .ShowRowLines(true)
-                             .AllowColumnReordering(true)
-                             .AllowColumnResizing(true)
-                             .ColumnAutoWidth(true)
-                             .Paging(s => s.Enabled(true).PageSize(5))
-                             .SearchPanel(d => d.Visible(true))
-                             .DataSource(s => s.RemoteController().UpdateUrl("/Materias?handler=ActualizarMateria").InsertUrl("/Materias?handler=CrearMateria").LoadUrl("/Materias?handler=ObtenerMaterias").Key("Id"))
-                             .Columns(s =>
-                             {
+            .ID("TableMateria")
+            .ShowRowLines(true)
+            .OnEditingStart("SetEditmode")
+            .Export(s => s.Enabled(true))
+            .Editing(s=>s.AllowUpdating(true).UseIcons(true).Mode(GridEditMode.Form))                                          
+            .RowAlternationEnabled(true)
+            .ShowBorders(true)
+            .ShowColumnLines(true)
+            .FilterRow(s => s.Visible(true))
+            .ShowRowLines(true)
+            .AllowColumnReordering(true)
+            .AllowColumnResizing(true)
+            .ColumnAutoWidth(true)
+            .Paging(s => s.Enabled(true).PageSize(5))
+            .SearchPanel(d => d.Visible(true))
+            .DataSource(s => s.RemoteController().UpdateUrl("/Materias?handler=ActualizarMateria").InsertUrl("/Materias?handler=CrearMateria").LoadUrl("/Materias?handler=ObtenerMaterias").Key("Id"))
+            .Columns(s =>
+            {
 
-                                 s.AddFor(q => q.Code).Caption("Codigo").ValidationRules(k=>k.AddRequired().Message("Codido es requerido")).ValidationRules(y=>y.AddAsync().ValidationCallback("CodigoUnico").Message("Ya existe una matería con ese codigo registrado")).FormItem(h=>h.Editor(e=>e.TextBox().MaxLength(4)));
-                                 s.AddFor(q => q.Nombre).ValidationRules(g=>g.AddRequired().Message("El nombre es requerido")).Caption("Nombre");
-                                 s.AddFor(q => q.Estado.Id).Caption("Estado").Lookup(g => g.DataSource(f => f.RemoteController().LoadUrl("/Materias?handler=ObtenerEstadoMaterias").Key("Id")).DisplayExpr("Nombre").ValueExpr("Id"));
-                                 s.AddFor(g => g.year).ValidationRules(g => g.AddRequired().Message("El año es requerido")).Caption("Año").FormItem(k => k.Editor(l => l.NumberBox().Min(DateTime.Now.Year)));
-                             })
+                s.AddFor(q => q.Code).Caption("Codigo").ValidationRules(k=>k.AddRequired().Message("Codido es requerido")).ValidationRules(y=>y.AddAsync().ValidationCallback("CodigoUnico").Message("Ya existe una matería con ese codigo registrado")).FormItem(h=>h.Editor(e=>e.TextBox().MaxLength(4)));
+                s.AddFor(q => q.Nombre).ValidationRules(g=>g.AddRequired().Message("El nombre es requerido")).Caption("Nombre");
+                s.AddFor(q => q.Estado.Id).Caption("Estado").Lookup(g => g.DataSource(f => f.RemoteController().LoadUrl("/Materias?handler=ObtenerEstadoMaterias").Key("Id")).DisplayExpr("Nombre").ValueExpr("Id"));
+                s.AddFor(g => g.year).ValidationRules(g => g.AddRequired().Message("El año es requerido")).Caption("Año").FormItem(k => k.Editor(l => l.NumberBox().Min(DateTime.Now.Year)));
+            })
 
             )
 

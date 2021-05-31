@@ -101,7 +101,6 @@ async function ValidarIdentificacionUnica(e)
     }
 }
 
-
 function EsconderGrid()
 {
     $("#divgrid").hide();

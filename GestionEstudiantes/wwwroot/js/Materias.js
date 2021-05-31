@@ -10,8 +10,9 @@ var isEdition = false;
 
 function AddModeGrid()
 {
-    $("#TableMateria").dxDataGrid("instance").addRow();
-    isEdition = false;   
+    isEdition = false; 
+    $("#TableMateria").dxDataGrid("instance").addRow();     
+    $("#TableMateria").dxDataGrid("instance").columnOption("Code", "allowEditing", true);
 }
 
 async function CodigoUnico(e)
@@ -22,7 +23,8 @@ async function CodigoUnico(e)
     {
         var codigo = e.value;
 
-        if (codigo != null && codigo != "") {
+        if (codigo != null && codigo != "")
+        {
             valido = await $.ajax({
                 method: "GET",
                 url: "/Materias?handler=VerificarCodigoUnico",
@@ -34,7 +36,8 @@ async function CodigoUnico(e)
     return valido;
 }
 
-function SetEditmode()
-{
+function SetEditmode(e)
+{   
     isEdition = true;
+    $("#TableMateria").dxDataGrid("instance").columnOption("Code", "allowEditing", false);
 }

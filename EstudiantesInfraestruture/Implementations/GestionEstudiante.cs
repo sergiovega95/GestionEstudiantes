@@ -115,10 +115,7 @@ namespace EstudiantesInfraestruture.Implementations
 
         public void ActualizarMateria(Materia materia)
         {
-            if (materia.Estado.Id!=0)
-            {
-                materia.Estado = _dbcontext.EstadoMateria.Find(materia.Id);
-            }
+            materia.Estado = materia.Estado.Id != 0 ? _dbcontext.EstadoMateria.Find(materia.Id) : materia.Estado;          
             _dbcontext.SaveChanges();
         }
     }

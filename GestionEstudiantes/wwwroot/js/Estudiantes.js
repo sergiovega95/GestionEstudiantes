@@ -173,3 +173,8 @@ async function VerEstudianteFromGrid(e)
     $("#btnsalvar").dxButton("instance").option("disabled", true)
     isEdition = true;
 }
+
+function ExpandiendoFila(e)
+{
+    e.component.collapseAll(-1);
+}

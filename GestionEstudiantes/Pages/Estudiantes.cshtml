@@ -19,38 +19,39 @@
                 @(Html.DevExtreme().Button().Text("Nuevo estudiante").Icon("add").OnClick("EsconderGrid").Type(ButtonType.Default))
 
                 @(Html.DevExtreme().DataGrid<Estudiantes>()
-                                       .ID("TableEstudiantes")
-                                       .ShowRowLines(true)
-                                       .Export(s => s.Enabled(true))
-                                       .RowAlternationEnabled(true)
-                                       .ShowBorders(true)
-                                       .ShowColumnLines(true)
-                                       .FilterRow(s => s.Visible(true))
-                                        .ShowRowLines(true)
-                                       .AllowColumnReordering(true)
-                                       .AllowColumnResizing(true)
-                                       .ColumnAutoWidth(true)
-                                       .Paging(s => s.Enabled(true).PageSize(5))
-                                       .SearchPanel(d => d.Visible(true))
-                                       .DataSource(s => s.RemoteController().LoadUrl("/Estudiantes?handler=ObtenerEstudiantes"))
-                                       .Columns(s =>
-                                       {
-                                           s.AddFor(q => q.TipoDocumento.Id).Caption("Tipo de documento").Lookup(q => q.DataSource(f => f.RemoteController().LoadUrl("/Estudiantes?handler=TipoDocumento").Key("Id")).ValueExpr("Id").DisplayExpr("Nombre"));
-                                           s.AddFor(q => q.Documento).Caption("Documento");
-                                           s.AddFor(q => q.Nombre).Caption("Nombres");
-                                           s.AddFor(q => q.Apellido).Caption("Apellidos");
-                                           s.AddFor(q => q.Estado.Id).Caption("Estado").Lookup(h => h.DataSource(f => f.RemoteController().LoadUrl("/Estudiantes?handler=Estados").Key("Id")).DisplayExpr("Nombre").ValueExpr("Id"));
-                                           s.Add().Visible(true)
-                                           .Type(GridCommandColumnType.Buttons)
-                                           .Width(110).Buttons(b =>
-                                           {
+                .ID("TableEstudiantes")
+                .ShowRowLines(true)
+                .Export(s => s.Enabled(true))
+                .RowAlternationEnabled(true)
+                .ShowBorders(true)
+                .ShowColumnLines(true)
+                .FilterRow(s => s.Visible(true))
+                .ShowRowLines(true)
+                .AllowColumnReordering(true)
+                .AllowColumnResizing(true)
+                .OnRowExpanding("ExpandiendoFila")
+                .ColumnAutoWidth(true)
+                .Paging(s => s.Enabled(true).PageSize(5))
+                .SearchPanel(d => d.Visible(true))
+                .DataSource(s => s.RemoteController().LoadUrl("/Estudiantes?handler=ObtenerEstudiantes"))
+                .Columns(s =>
+                {
+                    s.AddFor(q => q.TipoDocumento.Id).Caption("Tipo de documento").Lookup(q => q.DataSource(f => f.RemoteController().LoadUrl("/Estudiantes?handler=TipoDocumento").Key("Id")).ValueExpr("Id").DisplayExpr("Nombre"));
+                    s.AddFor(q => q.Documento).Caption("Documento");
+                    s.AddFor(q => q.Nombre).Caption("Nombres");
+                    s.AddFor(q => q.Apellido).Caption("Apellidos");
+                    s.AddFor(q => q.Estado.Id).Caption("Estado").Lookup(h => h.DataSource(f => f.RemoteController().LoadUrl("/Estudiantes?handler=Estados").Key("Id")).DisplayExpr("Nombre").ValueExpr("Id"));
+                    s.Add().Visible(true)
+                    .Type(GridCommandColumnType.Buttons)
+                    .Width(110).Buttons(b =>
+                    {
 
-                                               b.Add().Icon("edit").Hint("Editar").OnClick("EditarEstudianteFromGrid");
-                                               b.Add().Icon("info").Hint("Detalle").OnClick("VerEstudianteFromGrid");
+                        b.Add().Icon("edit").Hint("Editar").OnClick("EditarEstudianteFromGrid");
+                        b.Add().Icon("info").Hint("Detalle").OnClick("VerEstudianteFromGrid");
 
-                                           });
+                    });
 
-                                       })
+                }).MasterDetail(m => m.Enabled(true).AutoExpandAll(false).Template(new TemplateName("MasterDetailEstudiante")))
 
                 )
             </div>
@@ -63,6 +64,29 @@
 
 
 </div>
+
+
+
+@using (Html.DevExtreme().NamedTemplate("MasterDetailEstudiante"))
+{
+
+    @(Html.DevExtreme().TabPanel()
+        .ID("tabpanel-estudiante")
+        .SelectedIndex(0)
+        .Loop(false)
+        .AnimationEnabled(true)
+        .SwipeEnabled(true)
+        .Items(itemtab=>{
+
+            itemtab.Add().Title("Materías matriculadas").Template(@<text>  </text>);
+            itemtab.Add().Title("Todas las materías").Template(@<text>  </text>);            
+
+        })
+    )
+}
+
+
+
 
 
 @(Html.DevExtreme().Popup()

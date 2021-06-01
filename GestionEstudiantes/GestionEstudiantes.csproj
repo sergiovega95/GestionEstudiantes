@@ -10,11 +10,21 @@
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
     </PackageReference>
+    <PackageReference Include="NLog" Version="4.5.11" />
+    <PackageReference Include="NLog.Web.AspNetCore" Version="4.8.0" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\EstudiantesCore\EstudiantesCore.csproj" />
     <ProjectReference Include="..\EstudiantesInfraestruture\EstudiantesInfraestruture.csproj" />
     <PackageReference Include="DevExtreme.AspNet.Core" Version="20.2.5" />
     <PackageReference Include="DevExtreme.AspNet.Data" Version="2.7.1" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Update="nlog.config">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Update="Pages\PartialViews\_notas.cshtml">
+      <Pack>$(IncludeRazorContentInPack)</Pack>
+    </Content>
   </ItemGroup>
 </Project>

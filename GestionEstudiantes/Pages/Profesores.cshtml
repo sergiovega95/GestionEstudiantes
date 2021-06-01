@@ -1,4 +1,58 @@
 ﻿@page
 @model GestionEstudiantes.Pages.ProfesoresModel
-@{
+
+@Html.AntiForgeryToken()
+@using DevExtreme.AspNet.Mvc
+@using EstudiantesCore.Entidades
+
+
+<div class="divalumnos">
+    <div class="card">
+    <div class="card-body">
+        <div class="mb-4">
+            @(Html.DevExtreme().Button().OnClick("AddModeGrid").Icon("add").Text("Nuevo profesor").Type(ButtonType.Default))
+
+        </div>
+        <div>
+
+            @(Html.DevExtreme().DataGrid<Profesor>()
+            .ID("TableProfesores")
+            .ShowRowLines(true)
+            .OnEditingStart("SetEditmode")
+            .Export(s => s.Enabled(true))
+            .Editing(s=>s.AllowUpdating(true).UseIcons(true).Mode(GridEditMode.Popup).Popup(h=>h.DragEnabled(true)))
+            .RowAlternationEnabled(true)
+            .ShowBorders(true)
+            .ShowColumnLines(true)
+            .FilterRow(s => s.Visible(true))
+            .ShowRowLines(true)
+            .AllowColumnReordering(true)
+            .AllowColumnResizing(true)
+            .ColumnAutoWidth(true)
+            .Paging(s => s.Enabled(true).PageSize(5))
+            .SearchPanel(d => d.Visible(true))
+            .DataSource(s => s.RemoteController().UpdateUrl("/Profesores?handler=ActualizarProfesor").InsertUrl("/Profesores?handler=CrearProfesor").LoadUrl("/Profesores?handler=ObtenerProfesores").Key("Id"))
+            .Columns(s =>
+            {
+
+                s.AddFor(q => q.TipoDocumento.Id).Caption("Tipo documento").FormItem(f=>f.Editor(g=>g.SelectBox().ID("SelectTipoDocumento").DataSource(h=>h.RemoteController().LoadUrl("/Estudiantes?handler=TipoDocumento").Key("Id")).DisplayExpr("Nombre"))).Lookup(g => g.DataSource(f => f.RemoteController().LoadUrl("/Estudiantes?handler=TipoDocumento").Key("Id")).DisplayExpr("Nombre").ValueExpr("Id"));
+                s.AddFor(g => g.Documento).ValidationRules(f=>f.AddAsync().ValidationCallback("IdentificacionUnica").Message("Ya existe un profesor registrado con este documento").Reevaluate(true)) .ValidationRules(g => g.AddRequired().Message("El documento es requerido")).ValidationRules(g => g.AddStringLength().Min(3).Message("Mínimo 3 caracteres")).Caption("Documento").FormItem(k => k.Editor(l => l.TextBox().MaxLength(20)));
+                s.AddFor(q => q.Nombre).ValidationRules(g=>g.AddRequired().Message("El nombre es requerido")).Caption("Nombre");
+                s.AddFor(q => q.Apellido).ValidationRules(g => g.AddRequired().Message("El apellido es requerido")).Caption("Apellido");
+
+            })
+
+            )
+
+
+        </div>
+    </div>
+</div>
+</div>
+
+
+
+@section Scripts
+    {
+    <script src="~/js/Profesores.js"></script>
 }

@@ -6,24 +6,30 @@ using DevExtreme.AspNet.Data;
 using DevExtreme.AspNet.Mvc;
 using EstudiantesCore.Dtos;
 using EstudiantesCore.Entidades;
+using EstudiantesCore.Enums;
 using EstudiantesCore.Interactores;
 using EstudiantesCore.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.Extensions.Logging;
 
 namespace GestionEstudiantes.Pages
 {
     public class EstudiantesModel : PageModel
     {
         private readonly IGestionEstudiante _estudiante ;
+        private readonly ILogger<EstudiantesModel> _logger;
 
         public void OnGet()
         {
+            _logger.LogInformation("Entre a la vista de estudiantes");
         }
 
-        public EstudiantesModel(IGestionEstudiante estudiante )
+
+        public EstudiantesModel(IGestionEstudiante estudiante, ILogger<EstudiantesModel> logger)
         {
             _estudiante = estudiante;
+            _logger = logger;
         }
 
         /// <summary>
@@ -35,10 +41,11 @@ namespace GestionEstudiantes.Pages
         public IActionResult OnPostCrearEstudiante(Estudiantes estudiante)
         {
             try
-            {
+            {               
+
                 if (estudiante.Id==0)
                 {
-                    estudiante.Estado = _estudiante.GetEstadoByCodigo("M");
+                    estudiante.Estado = _estudiante.GetEstadoByCodigo(EnumEstadoEstudiante.Matriculado);
                     _estudiante.MatricularEstudiante(estudiante);
                 }
                 else
@@ -50,6 +57,7 @@ namespace GestionEstudiantes.Pages
             }
             catch (Exception e)
             {
+                _logger.LogError(e, "Codigo 23 Error al crear un usuarió");
                 return StatusCode(500,e.Message);
             }
         }

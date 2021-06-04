@@ -7,7 +7,7 @@
 });
 
 var isEdition = false;
-
+var EstudianteActual = null;
 
 //Guarda y valida mi formulario
 async function Salvar()
@@ -172,4 +172,23 @@ async function VerEstudianteFromGrid(e)
     $("#FormEstudiante").dxForm("instance").option("readOnly", true);
     $("#btnsalvar").dxButton("instance").option("disabled", true)
     isEdition = true;
+}
+
+function Expading (e)
+{
+    //solo permite expandir una vez
+    e.component.collapseAll(-1);
+    EstudianteActual = e.key;
+    console.log(e);
+}
+
+function MandarDataEstudiante(action ,info)
+{
+    if (action == "load")
+    {     
+        
+        info.data.idEstudiante = EstudianteActual.Id; 
+        
+    }   
+
 }

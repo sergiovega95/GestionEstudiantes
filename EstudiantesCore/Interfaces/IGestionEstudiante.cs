@@ -13,8 +13,13 @@ namespace EstudiantesCore.Interfaces
 
         Estudiantes ObtenerEstudiante(int IdEstudiante);
 
-        List<Estudiantes> ObtenerTodosEstudiantes();
+        List<Estudiantes> ObtenerTodosEstudiantes(bool getall , int take , int skip);
 
+        /// <summary>
+        /// obtiene los estudiantes
+        /// </summary>
+        /// <param name="IdEstudiante"></param>
+        /// <returns></returns>
         List<EstudiantesXMateria> ObtenerMateriasEstudiante(int IdEstudiante);
 
         List<TipoDocumento> GetDocumentos();

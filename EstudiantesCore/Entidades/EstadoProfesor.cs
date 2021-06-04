@@ -14,6 +14,9 @@ namespace EstudiantesCore.Entidades
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
+        /// <summary>
+        /// denota el codigo del profesor
+        /// </summary>
         public string Code { get; set; }
 
         public string Nombre { get; set; }

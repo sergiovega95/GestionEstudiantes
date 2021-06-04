@@ -7,6 +7,7 @@ using DevExtreme.AspNet.Mvc;
 using EstudiantesCore.Dtos;
 using EstudiantesCore.Entidades;
 using EstudiantesCore.Enums;
+using EstudiantesCore.Exceptions;
 using EstudiantesCore.Interactores;
 using EstudiantesCore.Interfaces;
 using Microsoft.AspNetCore.Mvc;
@@ -41,8 +42,8 @@ namespace GestionEstudiantes.Pages
         public IActionResult OnPostCrearEstudiante(Estudiantes estudiante)
         {
             try
-            {               
-
+            {        
+                
                 if (estudiante.Id==0)
                 {
                     estudiante.Estado = _estudiante.GetEstadoByCodigo(EnumEstadoEstudiante.Matriculado);
@@ -54,6 +55,11 @@ namespace GestionEstudiantes.Pages
                 }
                            
                 return StatusCode(200);
+            }
+            catch(CustomExcepcion excepcion)
+            {
+                _logger.LogError(excepcion, excepcion.Message);
+                return StatusCode(500, excepcion.Message);
             }
             catch (Exception e)
             {
@@ -131,8 +137,22 @@ namespace GestionEstudiantes.Pages
         {
             try
             {
-                List<Estudiantes> estudiantes = _estudiante.ObtenerTodosEstudiantes();
-                return new JsonResult(DataSourceLoader.Load(estudiantes, options));
+                bool getAll = true;
+
+                if (options.Take>0)
+                {
+                    getAll = false;
+                }
+                
+                List<Estudiantes> estudiantes = _estudiante.ObtenerTodosEstudiantes(getAll,options.Take,options.Skip);
+                var data = DataSourceLoader.Load(estudiantes, options);
+
+                if (estudiantes.Any())
+                {
+                    data.totalCount = estudiantes[0].TotalCount;
+                }              
+
+                return new JsonResult(data);
             }
             catch (Exception e)
             {
@@ -167,5 +187,34 @@ namespace GestionEstudiantes.Pages
 
         }
 
+        /// <summary>
+        /// Permite obtener las materías matriculas por un estudiante
+        /// </summary>
+        /// <param name="options"></param>
+        /// <param name="IdEstudiante">Id estudiante</param>
+        /// <returns></returns>
+        [HttpGet]
+        public IActionResult OnGetMateriasEstudiante(DataSourceLoadOptions options , int idEstudiante)
+        {
+            try
+            {                           
+
+                List<EstudiantesXMateria> materias = new List<EstudiantesXMateria>();
+
+                if (idEstudiante != 0)
+                {
+                    materias = _estudiante.ObtenerMateriasEstudiante(idEstudiante);                   
+                }
+               
+                return new JsonResult(DataSourceLoader.Load(materias, options));
+            }
+            
+            catch (Exception e)
+            {
+                _logger.LogError("Ocurrió un error al cargar als materías por estudiante", e);
+                return BadRequest("Error inesperado");
+            }
+           
+        }
     }
 }

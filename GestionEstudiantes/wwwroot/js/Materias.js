@@ -13,6 +13,7 @@ function AddModeGrid()
     isEdition = false; 
     $("#TableMateria").dxDataGrid("instance").addRow();     
     $("#TableMateria").dxDataGrid("instance").columnOption("Code", "allowEditing", true);
+    $("#TableMateria").dxDataGrid("instance").columnOption("Estado.Id", "allowEditing", false);
 }
 
 async function CodigoUnico(e)
@@ -40,4 +41,17 @@ function SetEditmode(e)
 {   
     isEdition = true;
     $("#TableMateria").dxDataGrid("instance").columnOption("Code", "allowEditing", false);
+    $("#TableMateria").dxDataGrid("instance").columnOption("Estado.Id", "allowEditing", true);
+}
+
+function EditorPreparado(e)
+{
+    if (e.dataField === "Estado.Id" && e.parentType === "dataRow")
+    {
+        if (!isEdition) {
+            e.editorOptions.value = 1;
+            e.row.data.Estado = { Id: 1 };
+        }
+
+    }
 }

@@ -17,6 +17,7 @@
 
             @(Html.DevExtreme().DataGrid<Profesor>()
             .ID("TableProfesores")
+            .OnEditorPreparing("EditorPreparado")
             .ShowRowLines(true)
             .OnEditingStart("SetEditmode")
             .Export(s => s.Enabled(true))
@@ -39,6 +40,7 @@
                 s.AddFor(g => g.Documento).ValidationRules(f=>f.AddAsync().ValidationCallback("IdentificacionUnica").Message("Ya existe un profesor registrado con este documento").Reevaluate(true)) .ValidationRules(g => g.AddRequired().Message("El documento es requerido")).ValidationRules(g => g.AddStringLength().Min(3).Message("Mínimo 3 caracteres")).Caption("Documento").FormItem(k => k.Editor(l => l.TextBox().MaxLength(20)));
                 s.AddFor(q => q.Nombre).ValidationRules(g=>g.AddRequired().Message("El nombre es requerido")).Caption("Nombre");
                 s.AddFor(q => q.Apellido).ValidationRules(g => g.AddRequired().Message("El apellido es requerido")).Caption("Apellido");
+                s.AddFor(q => q.Estado.Id).Caption("Estado").Lookup(g => g.DataSource(f => f.RemoteController().LoadUrl("/Profesores?handler=EstadosProfesores").Key("Id")).ValueExpr("Id").DisplayExpr("Nombre"));
 
             })
 

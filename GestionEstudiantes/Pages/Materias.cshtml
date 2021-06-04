@@ -20,6 +20,7 @@
             @(Html.DevExtreme().DataGrid<Materia>()
             .ID("TableMateria")
             .ShowRowLines(true)
+            .OnEditorPreparing("EditorPreparado")
             .OnEditingStart("SetEditmode")
             .Export(s => s.Enabled(true))
             .Editing(s=>s.AllowUpdating(true).UseIcons(true).Mode(GridEditMode.Form))                                          

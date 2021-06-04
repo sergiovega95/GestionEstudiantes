@@ -1,4 +1,5 @@
 ﻿using EstudiantesCore.Entidades;
+using EstudiantesCore.Exceptions;
 using EstudiantesCore.Interactores;
 using EstudiantesCore.Interfaces;
 using EstudiantesInfraestruture.Database;
@@ -27,10 +28,19 @@ namespace EstudiantesInfraestruture.Implementations
 
         public void MatricularEstudiante(Estudiantes estudiante)
         {
-            estudiante.TipoDocumento = _dbcontext.TipoDocumento.Find(estudiante.TipoDocumento.Id);
-            estudiante.Estado = _dbcontext.EstadoEstudiante.Find(estudiante.Estado.Id);
-            _dbcontext.Estudiante.Add(estudiante);
-            _dbcontext.SaveChanges();
+            try
+            {               
+                //Proceso 1
+                estudiante.TipoDocumento = _dbcontext.TipoDocumento.Find(estudiante.TipoDocumento.Id);
+                estudiante.Estado = _dbcontext.EstadoEstudiante.Find(estudiante.Estado.Id);
+                _dbcontext.Estudiante.Add(estudiante);
+                _dbcontext.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                throw new CustomExcepcion("ocurrión un error en el proceso 1");
+            }
+           
         }
 
         public Estudiantes ObtenerEstudiante(int IdEstudiante)
@@ -49,10 +59,37 @@ namespace EstudiantesInfraestruture.Implementations
             return materias;
         }
 
-        public List<Estudiantes> ObtenerTodosEstudiantes()
+        public List<Estudiantes> ObtenerTodosEstudiantes(bool getall, int take, int skip)
         {
-            List<Estudiantes> estudiantes = _dbcontext.Estudiante.Include(s=>s.TipoDocumento)
-                                            .Include(s=>s.Estado).AsNoTracking().ToList();
+            List<Estudiantes> estudiantes = new List<Estudiantes>();
+
+            var query = _dbcontext.Estudiante.Include(s => s.TipoDocumento)
+                                            .Include(s => s.Estado).AsNoTracking();
+            //todas
+            if (getall)
+            {
+                estudiantes = query.ToList();
+
+                if (estudiantes.Any())
+                {
+                    estudiantes[0].TotalCount = query.Count();
+                }
+
+                
+            }
+            //paginas en demanda
+            else
+            {
+                if (take>0)
+                {
+                    estudiantes=query.Skip(skip).Take(take).ToList();
+
+                    if (estudiantes.Any())
+                    {
+                        estudiantes[0].TotalCount = query.Count();
+                    }
+                }
+            }           
 
             return estudiantes;
         }

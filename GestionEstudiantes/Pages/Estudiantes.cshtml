@@ -20,17 +20,20 @@
 
                 @(Html.DevExtreme().DataGrid<Estudiantes>()
                                                        .ID("TableEstudiantes")
-                                                       .ShowRowLines(true)
+                                                       .ShowRowLines(true)                                                       
+                                                       .RemoteOperations(d=>d.Paging(true).Filtering(true))
                                                        .Export(s => s.Enabled(true))
                                                        .RowAlternationEnabled(true)
                                                        .ShowBorders(true)
                                                        .ShowColumnLines(true)
                                                        .FilterRow(s => s.Visible(true))
                                                        .ShowRowLines(true)
+                                                       .OnRowExpanding("Expading")
                                                        .AllowColumnReordering(true)
                                                        .AllowColumnResizing(true)
                                                        .ColumnAutoWidth(true)
                                                        .Paging(s => s.Enabled(true).PageSize(5))
+                                                       .Pager(s=>s.AllowedPageSizes(new List<int > {5,10,15}).ShowNavigationButtons(true).ShowPageSizeSelector(true))
                                                        .SearchPanel(d => d.Visible(true))
                                                        .DataSource(s => s.RemoteController().LoadUrl("/Estudiantes?handler=ObtenerEstudiantes"))
                                                        .Columns(s =>
@@ -68,16 +71,19 @@
 @using (Html.DevExtreme().NamedTemplate("DetalleEstudiante"))
 {
     @(Html.DevExtreme().TabPanel()
-               .SelectedIndex(0)
-               .Loop(false)
-               .AnimationEnabled(true)
-               .SwipeEnabled(true)
-               .Items(item2 =>
-               {
+        .SelectedIndex(0) 
+        .ID("Tappanel")        
+        .Loop(false)
+        .AnimationEnabled(true)
+        .SwipeEnabled(true)
+        .Items(item2 =>
+        {
 
-                   item2.Add().Icon("add").Title("Materias").Template(@<text> @(await Html.PartialAsync("/Pages/PartialViews/_notas.cshtml")) </text>);
+            item2.Add().Icon("add").Title("Materias").Template(@<text> @(await Html.PartialAsync("/Pages/PartialViews/_Materias.cshtml")) </text>);
+            //item2.Add().Icon("add").Title("Materias").Template(@<text> @(await Html.PartialAsync("/Pages/PartialViews/_MateriasActivas.cshtml")) </text>);
+            item2.Add().Icon("add").Title("Notas").Template(@<text> @(await Html.PartialAsync("/Pages/PartialViews/_notas.cshtml")) </text>);
 
-               })
+        })
     )
 }
 

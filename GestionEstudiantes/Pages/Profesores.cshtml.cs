@@ -134,6 +134,25 @@ namespace GestionEstudiantes.Pages
             
         }
 
+        /// <summary>
+        /// obtiene los estados
+        /// </summary>
+        /// <param name="loader"></param>
+        /// <returns></returns>
+        [HttpGet]
+        public IActionResult OnGetEstadosProfesores(DataSourceLoadOptions options)
+        {
+            try
+            {
+                List<EstadoProfesor> estados = _profesores.GetEstadosProfesor();
+                return new JsonResult(DataSourceLoader.Load(estados, options));
+            }
+            catch (Exception e)
+            {
+                return StatusCode(500, e.Message);
+            }
+        }
+
 
     }
 }

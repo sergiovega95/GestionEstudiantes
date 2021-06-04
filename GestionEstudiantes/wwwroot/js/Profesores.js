@@ -14,6 +14,21 @@ function AddModeGrid()
     $("#TableProfesores").dxDataGrid("instance").addRow();     
     $("#TableProfesores").dxDataGrid("instance").columnOption("TipoDocumento.Id", "allowEditing", true);
     $("#TableProfesores").dxDataGrid("instance").columnOption("Documento", "allowEditing", true);
+    $("#TableProfesores").dxDataGrid("instance").columnOption("Estado.Id", "allowEditing", false);
+    
+}
+
+function EditorPreparado(e)
+{
+    if (e.dataField === "Estado.Id" && e.parentType === "dataRow")
+    {
+        if (!isEdition)
+        {
+            e.editorOptions.value = 1;            
+            e.row.data.Estado = { Id: 1 };
+        }        
+        
+    }
 }
 
 async function IdentificacionUnica(e)
@@ -47,4 +62,5 @@ function SetEditmode(e)
     isEdition = true;
     $("#TableProfesores").dxDataGrid("instance").columnOption("TipoDocumento.Id", "allowEditing", false);
     $("#TableProfesores").dxDataGrid("instance").columnOption("Documento", "allowEditing", false);
+    $("#TableProfesores").dxDataGrid("instance").columnOption("Estado.Id", "allowEditing", true);
 }

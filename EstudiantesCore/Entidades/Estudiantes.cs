@@ -57,6 +57,7 @@ namespace EstudiantesCore.Entidades
         [Required]
         public EstadoEstudiante Estado { get; set; }
 
-
+        [NotMapped]
+        public int TotalCount { get; set; }
     }
 }

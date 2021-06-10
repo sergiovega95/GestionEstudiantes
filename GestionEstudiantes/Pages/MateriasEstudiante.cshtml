@@ -1,0 +1,77 @@
+﻿@page
+@model GestionEstudiantes.Pages.MateriasEstudiante 
+@using EstudiantesCore.Dtos
+@using EstudiantesCore.Entidades
+@{
+}
+
+@Html.AntiForgeryToken()
+
+@using DevExtreme.AspNet.Mvc
+
+
+<div class="divalumnos">
+
+    <div class="card">
+        <div class="card-body">
+          
+
+            @(Html.DevExtreme().Form()
+              .ColCount(12)
+              .ID("formBusquedaEstudiante")
+              .Items(
+               i=>{
+
+                   i.AddSimple().ValidationRules(s=>s.AddRequired().Message("Ingrese el documento del estudiante")).ValidationRules(h=>h.AddNumeric().Message("Solo se permiten números")).Label(l => l.Text("Buscar estudiante")).Editor(s => s.TextBox().ID("txtestudiante").MaxLength(30).Placeholder("Ingrese el documento del estudiante")).ColSpan(10);
+                   i.AddButton().ColSpan(2).ButtonOptions(h=>h.Icon("search").Text("Buscar").OnClick("BuscarEstudiante").Width("100%").Type( ButtonType.Default)).ColSpan(2);
+               })
+
+            )       
+
+            <div class="mt-5">
+                <h4>Gestión de materías</h4>
+
+                @(Html.DevExtreme().DataGrid<EstudiantesXMateria>()
+                        .ID("TableMateriaXEstudiante")
+                        .ShowRowLines(true)
+                        .Export(s => s.Enabled(true))
+                        .Editing(s=>s.AllowAdding(true).AllowUpdating(true).UseIcons(true).Mode( GridEditMode.Form))
+                        .Editing(s => s.AllowUpdating(true).UseIcons(true).Mode(GridEditMode.Form))
+                        .RowAlternationEnabled(true)
+                        .ShowBorders(true)
+                        .ShowColumnLines(true)
+                        .FilterRow(s => s.Visible(true))
+                        .ShowRowLines(true)
+                        .AllowColumnReordering(true)
+                        .AllowColumnResizing(true)
+                        .ColumnAutoWidth(true)
+                        .Paging(s => s.Enabled(true).PageSize(10))
+                        .SearchPanel(d => d.Visible(true))
+                        .DataSource(s => s.RemoteController().UpdateUrl("/MateriasEstudiante?handler=ActualizarMateriaEstudiante").InsertUrl("/MateriasEstudiante?handler=CrearMateriaEstudiante").OnBeforeSend("MandarIdEstudiante").LoadUrl("/MateriasEstudiante?handler=ObtenerMateriasMatriculadasEstudiante").Key("Id"))
+                        .Columns(s =>
+                        {
+
+                            s.AddFor(q => q.Materia.Id).Caption("Matería").Lookup(g => g.DataSource(f => f.RemoteController().LoadUrl("/Materias?handler=ObtenerMaterias").Key("Id")).DisplayExpr("Nombre").ValueExpr("Id")); ;
+                            s.AddFor(q => q.Estado.Id).Caption("Estado").Lookup(g => g.DataSource(f => f.RemoteController().LoadUrl("/Materias?handler=ObtenerEstadoMaterias").Key("Id")).DisplayExpr("Nombre").ValueExpr("Id"));
+
+                        })
+
+                )
+
+
+            </div>
+           
+
+
+        </div>
+    </div>
+
+
+</div>
+
+
+
+@section Scripts
+    {
+    <script src="~/js/MateriasEstudiante.js"></script>
+}

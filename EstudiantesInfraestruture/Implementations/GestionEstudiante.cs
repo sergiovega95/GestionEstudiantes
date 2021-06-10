@@ -43,6 +43,14 @@ namespace EstudiantesInfraestruture.Implementations
            
         }
 
+
+        public Estudiantes ObtenerEstudianteByDocumento(string documento)
+        {
+
+            return  _dbcontext.Estudiante.Where(s => s.Documento.ToUpper() == documento.ToUpper()).FirstOrDefault();
+
+        }
+
         public Estudiantes ObtenerEstudiante(int IdEstudiante)
         {
             Estudiantes estudiante = _dbcontext.Estudiante.Where(s => s.Id == IdEstudiante)

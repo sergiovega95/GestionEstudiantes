@@ -75,9 +75,27 @@
 
         <div id="navbar" class="collapse navbar-collapse">
             <ul class="navbar-nav mr-auto">
-                <li class="active nav-item"><a href="#" class="nav-link">Home</a></li>
-                <li class="nav-item"><a href="/Estudiantes" class="nav-link">Estudiantes</a></li>
-                <li class="nav-item"><a href="/Materias" class="nav-link">Materías</a></li>
+                <li class="active nav-item"><a href="/" class="nav-link">Home</a></li>
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Estudiantes
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        <a class="dropdown-item" href="/Estudiantes">Inscribir estudiante</a>
+                        <a class="dropdown-item" href="/MateriasEstudiante">Gestionar materías</a>
+                    </div>                    
+                </li>
+
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" href="#"  data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        Materias
+                    </a>
+                    <div class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+                        <a class="dropdown-item" href="/Materias">Inscribir materías</a>
+                    </div>
+                </li>
+
                 <li class="nav-item"><a href="/Profesores" class="nav-link">Profesores</a></li>
             </ul>
         </div>

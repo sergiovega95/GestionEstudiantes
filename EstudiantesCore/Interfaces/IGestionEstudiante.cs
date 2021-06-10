@@ -13,6 +13,8 @@ namespace EstudiantesCore.Interfaces
 
         Estudiantes ObtenerEstudiante(int IdEstudiante);
 
+        Estudiantes ObtenerEstudianteByDocumento(string documento);
+
         List<Estudiantes> ObtenerTodosEstudiantes(bool getall , int take , int skip);
 
         /// <summary>

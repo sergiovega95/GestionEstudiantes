@@ -20,6 +20,7 @@ namespace GestionEstudiantes.Pages
     {
         private readonly IGestionEstudiante _estudiante ;
         private readonly ILogger<EstudiantesModel> _logger;
+        private readonly IMatricula _matricula;
 
         public void OnGet()
         {
@@ -27,10 +28,13 @@ namespace GestionEstudiantes.Pages
         }
 
 
-        public EstudiantesModel(IGestionEstudiante estudiante, ILogger<EstudiantesModel> logger)
+        public EstudiantesModel(IGestionEstudiante estudiante,
+                               ILogger<EstudiantesModel> logger,
+                               IMatricula matricula)
         {
             _estudiante = estudiante;
             _logger = logger;
+            _matricula = matricula;
         }
 
         /// <summary>
@@ -47,7 +51,7 @@ namespace GestionEstudiantes.Pages
                 if (estudiante.Id==0)
                 {
                     estudiante.Estado = _estudiante.GetEstadoByCodigo(EnumEstadoEstudiante.Matriculado);
-                    _estudiante.MatricularEstudiante(estudiante);
+                    _matricula.MatricularEstudiante(estudiante);
                 }
                 else
                 {

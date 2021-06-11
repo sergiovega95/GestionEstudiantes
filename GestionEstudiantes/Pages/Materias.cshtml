@@ -23,7 +23,7 @@
             .OnEditorPreparing("EditorPreparado")
             .OnEditingStart("SetEditmode")
             .Export(s => s.Enabled(true))
-            .Editing(s=>s.AllowUpdating(true).UseIcons(true).Mode(GridEditMode.Form))                                          
+            .Editing(s=>s.AllowUpdating(true).UseIcons(true).Mode(GridEditMode.Form))
             .RowAlternationEnabled(true)
             .ShowBorders(true)
             .ShowColumnLines(true)
@@ -42,6 +42,7 @@
                 s.AddFor(q => q.Nombre).ValidationRules(g=>g.AddRequired().Message("El nombre es requerido")).Caption("Nombre");
                 s.AddFor(q => q.Estado.Id).Caption("Estado").Lookup(g => g.DataSource(f => f.RemoteController().LoadUrl("/Materias?handler=ObtenerEstadoMaterias").Key("Id")).DisplayExpr("Nombre").ValueExpr("Id"));
                 s.AddFor(g => g.year).ValidationRules(g => g.AddRequired().Message("El año es requerido")).Caption("Año").FormItem(k => k.Editor(l => l.NumberBox().Min(DateTime.Now.Year)));
+                s.AddFor(g => g.MatriculaPorDefecto).Caption("Defecto");
             })
 
             )

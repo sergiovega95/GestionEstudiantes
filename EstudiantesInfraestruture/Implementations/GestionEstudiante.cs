@@ -1,4 +1,5 @@
 ﻿using EstudiantesCore.Entidades;
+using EstudiantesCore.Enums;
 using EstudiantesCore.Exceptions;
 using EstudiantesCore.Interactores;
 using EstudiantesCore.Interfaces;
@@ -26,15 +27,37 @@ namespace EstudiantesInfraestruture.Implementations
             _dbcontext.SaveChanges();           
         }
 
-        public void MatricularEstudiante(Estudiantes estudiante)
+        public void MatricularEstudiante(Estudiantes estudiante , List<EstudiantesXMateria> materiasDefecto)
         {
             try
-            {               
-                //Proceso 1
-                estudiante.TipoDocumento = _dbcontext.TipoDocumento.Find(estudiante.TipoDocumento.Id);
-                estudiante.Estado = _dbcontext.EstadoEstudiante.Find(estudiante.Estado.Id);
-                _dbcontext.Estudiante.Add(estudiante);
-                _dbcontext.SaveChanges();
+            {
+                using (var transaccion = _dbcontext.Database.BeginTransaction())
+                {
+                    //Proceso 1 crear mi estudiante
+                    estudiante.TipoDocumento = _dbcontext.TipoDocumento.Find(estudiante.TipoDocumento.Id);
+                    estudiante.Estado = _dbcontext.EstadoEstudiante.Find(estudiante.Estado.Id);
+                    _dbcontext.Estudiante.Add(estudiante);
+                    int idEstudiante = _dbcontext.SaveChanges();
+
+                    //Proceso 2 Matricular materias por defecto
+
+                    if (materiasDefecto.Any())
+                    {
+                        foreach (var materia in materiasDefecto)
+                        {
+                            materia.Estudiante = new Estudiantes() { Id = idEstudiante };
+                            materia.Estado = _dbcontext.EstadoMateria.Where(s => s.Code == EnumEstadoMateria.Activo).FirstOrDefault();
+                        }
+                    }
+                    
+                    _dbcontext.EstudianteXMaterias.AddRange(materiasDefecto);
+                    _dbcontext.SaveChanges();
+
+                    transaccion.Commit();
+
+                }              
+               
+               
             }
             catch (Exception e)
             {

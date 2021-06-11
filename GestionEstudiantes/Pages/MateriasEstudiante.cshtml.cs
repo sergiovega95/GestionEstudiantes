@@ -79,7 +79,7 @@ namespace GestionEstudiantes.Pages
                 if (idEstudiante != 0)
                 {
                     EstudiantesXMateria materia = JsonConvert.DeserializeObject<EstudiantesXMateria>(values);
-                    materia.Estudiante = new Estudiantes() { Id = idEstudiante };
+                    materia.Estudiante = new Estudiantes() { Id = idEstudiante };                   
                     _materias.MatricularMateria(materia);                    
                 }
 
@@ -92,6 +92,32 @@ namespace GestionEstudiantes.Pages
             }
         }
 
+        /// <summary>
+        /// Actualiza el estado de una matería o demas
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="values"></param>
+        /// <returns></returns>
+        [HttpPut]
+        public IActionResult OnPutActualizarMateriaEstudiante(int key , string values)
+        {
+            try
+            {
+                if (key != 0)
+                {
+                    EstudiantesXMateria materia = _materias.GetMateriaEstudianteById(key);
+                    JsonConvert.PopulateObject(values, materia);
+                    _materias.ActualizarMateriaMatriculada(materia);
+                }
+
+                return StatusCode(200);
+            }
+            catch (Exception e)
+            {
+                _logger.LogError("Error al obtener las materías de un estudiante", e);
+                return BadRequest("Error al actualizar la matería");
+            }
+        }
 
 
     }

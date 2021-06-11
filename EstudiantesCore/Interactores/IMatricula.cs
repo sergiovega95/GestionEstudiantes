@@ -7,6 +7,7 @@ namespace EstudiantesCore.Interactores
 {
     public interface IMatricula
     {
-        
+        void MatricularEstudiante(Estudiantes nuevo);
+       
     }
 }

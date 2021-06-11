@@ -24,5 +24,7 @@ namespace EstudiantesCore.Entidades
 
         [Required]
         public int year { get; set; }
+              
+        public bool MatriculaPorDefecto { get; set; } 
     }
 }

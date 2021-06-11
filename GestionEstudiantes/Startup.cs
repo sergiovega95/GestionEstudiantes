@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using EstudiantesCore.Implementations;
 using EstudiantesCore.Interactores;
 using EstudiantesCore.Interfaces;
 using EstudiantesInfraestruture.Database;
@@ -39,6 +40,7 @@ namespace GestionEstudiantes
             services.AddScoped<IGestionEstudiante, GestionEstudiante>();
             services.AddScoped<IGestionProfesores, GestionProfesores>();
             services.AddScoped<IGestionMaterias, GestionMaterias>();
+            services.AddScoped<IMatricula, Matricula>();
             services.AddDbContext<AppDbContext>(s=>s.UseSqlServer(Configuration.GetConnectionString("Database")));
             services.AddMvc().AddJsonOptions(options => options.SerializerSettings.ContractResolver = new Newtonsoft.Json.Serialization.DefaultContractResolver()).SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
         }

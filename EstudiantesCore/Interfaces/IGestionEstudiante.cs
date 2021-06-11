@@ -7,7 +7,7 @@ namespace EstudiantesCore.Interfaces
 {
     public interface IGestionEstudiante
     {
-        void MatricularEstudiante(Estudiantes estudiante);
+        void MatricularEstudiante(Estudiantes estudiante, List<EstudiantesXMateria> materiasDefecto);
 
         void ActualizarEstudiante(Estudiantes estudiante);
 

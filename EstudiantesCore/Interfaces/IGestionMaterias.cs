@@ -13,6 +13,10 @@ namespace EstudiantesCore.Interfaces
         void MatricularMateria(EstudiantesXMateria materiaMatriculada);
 
         void ActualizarMateriaMatriculada(EstudiantesXMateria materiaMatriculada);
-       
+
+        EstudiantesXMateria GetMateriaEstudianteById(int idMateriaEstudiante);
+
+        List<Materia> GetMateriasPorDefecto() ;
+
     }
 }

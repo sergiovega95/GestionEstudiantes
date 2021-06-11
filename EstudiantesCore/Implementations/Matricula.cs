@@ -12,6 +12,12 @@ namespace EstudiantesCore.Implementations
         private readonly IGestionMaterias _materia;
         private readonly IGestionEstudiante _estudiante;
 
+        public Matricula(IGestionMaterias materia , IGestionEstudiante estudiante)
+        {
+            _materia = materia;
+            _estudiante = estudiante;
+        }
+
         public void MatricularEstudiante(Estudiantes nuevo)
         {
             List<Materia> materiasdefecto = _materia.GetMateriasPorDefecto();

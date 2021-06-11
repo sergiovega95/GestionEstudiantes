@@ -31,6 +31,8 @@ namespace EstudiantesInfraestruture.Database
 
         public DbSet<TipoDocumento> TipoDocumento { get; set; }
 
+        public DbSet<Notas> Notas { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<Estudiantes>()

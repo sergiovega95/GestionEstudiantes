@@ -37,7 +37,7 @@ namespace EstudiantesInfraestruture.Implementations
                     estudiante.TipoDocumento = _dbcontext.TipoDocumento.Find(estudiante.TipoDocumento.Id);
                     estudiante.Estado = _dbcontext.EstadoEstudiante.Find(estudiante.Estado.Id);
                     _dbcontext.Estudiante.Add(estudiante);
-                    int idEstudiante = _dbcontext.SaveChanges();
+                    _dbcontext.SaveChanges();
 
                     //Proceso 2 Matricular materias por defecto
 
@@ -45,7 +45,8 @@ namespace EstudiantesInfraestruture.Implementations
                     {
                         foreach (var materia in materiasDefecto)
                         {
-                            materia.Estudiante = new Estudiantes() { Id = idEstudiante };
+                            materia.Estudiante = new Estudiantes() { Id = estudiante.Id };
+                            materia.Materia = _dbcontext.Materia.Find(materia.Materia.Id);
                             materia.Estado = _dbcontext.EstadoMateria.Where(s => s.Code == EnumEstadoMateria.Activo).FirstOrDefault();
                         }
                     }
@@ -183,7 +184,7 @@ namespace EstudiantesInfraestruture.Implementations
 
         public void ActualizarMateria(Materia materia)
         {
-            materia.Estado = materia.Estado.Id != 0 ? _dbcontext.EstadoMateria.Find(materia.Id) : materia.Estado;          
+            materia.Estado = materia.Estado!= null ? _dbcontext.EstadoMateria.Find(materia.Id) : materia.Estado;          
             _dbcontext.SaveChanges();
         }
     }

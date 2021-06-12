@@ -8,6 +8,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 
 namespace EstudiantesInfraestruture.Implementations
 {
@@ -27,6 +28,36 @@ namespace EstudiantesInfraestruture.Implementations
             _dbcontext.SaveChanges();
         }
 
+
+        public async Task<Notas> GetNotaById(int IdNota)
+        {
+            return await _dbcontext.Notas.FindAsync(IdNota);
+        }
+
+        public async  Task ActualizarNota(Notas nota)
+        {
+            _dbcontext.Update(nota);
+            await _dbcontext.SaveChangesAsync();
+        }
+
+        public async  Task BorrarNota(int idNota)
+        {
+            Notas nota = await _dbcontext.Notas.FindAsync(idNota);
+
+            if (nota!=null)
+            {
+                _dbcontext.Notas.Remove(nota);
+                await _dbcontext.SaveChangesAsync();
+            }
+        }
+
+        public async Task CrearNota(Notas nota)
+        {            
+            nota.Materia = await _dbcontext.EstudianteXMaterias.FindAsync(nota.Materia.Id);
+            _dbcontext.Notas.Add(nota);
+            await _dbcontext.SaveChangesAsync();
+        }
+
         public EstudiantesXMateria GetMateriaEstudianteById(int idMateriaEstudiante)
         {
             return _dbcontext.EstudianteXMaterias.Find(idMateriaEstudiante);
@@ -43,6 +74,11 @@ namespace EstudiantesInfraestruture.Implementations
         public List<Materia> GetMateriasPorDefecto()
         {
             return _dbcontext.Materia.Where(s => s.MatriculaPorDefecto).AsNoTracking().ToList();
+        }
+
+        public async Task<List<Notas>> GetNotasByMateriaEstudiante(int idEstudianteXMateria)
+        {
+            return await _dbcontext.Notas.Where(s => s.Materia.Id == idEstudianteXMateria).ToListAsync();
         }
 
         public void MatricularMateria(EstudiantesXMateria materiaMatriculada)
